@@ -6,6 +6,12 @@ on:
       - main
 
 jobs:
+
+  run-deploy:
+    uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml@main
+    with: 
+      env: "design"
+
   build:
     runs-on: ubuntu-latest
     # container:
@@ -34,8 +40,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml@main
-        with: 
-          env: "design"
+      - uses: actions/run-deploy
     needs: 
       - sonar

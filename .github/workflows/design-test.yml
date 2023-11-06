@@ -11,6 +11,12 @@ on:
           - run
 
 jobs:
+
+  run-deploy:
+    uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml@main
+    with: 
+      env: "staging"
+
   e2e:
     runs-on: ubuntu-latest
     # container:
@@ -30,9 +36,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml@main
-        with: 
-          env: "staging"
+      - uses: actions/run-deploy
     needs: 
       - e2e
       - lighthouse
