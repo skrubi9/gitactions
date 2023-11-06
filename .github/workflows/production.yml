@@ -19,12 +19,9 @@ jobs:
         with: 
           approvers: skrubi9
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.0
-      - uses: ./.github/workflows/reusable-deploy.yml
-        with: 
-          env: "production"
+    uses: ./.github/workflows/reusable-deploy.yml
+    with: 
+      env: "production"
     needs: 
       - manual-approve-deploy
 

@@ -28,12 +28,9 @@ jobs:
       - name: Lighthouse
         run: echo "LIGHTHOUSE"
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.0
-      - uses: ./.github/workflows/reusable-deploy.yml
-        with: 
-          env: "staging"
+    uses: ./.github/workflows/reusable-deploy.yml
+    with: 
+      env: "staging"
     needs: 
       - e2e
       - lighthouse
