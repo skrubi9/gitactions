@@ -31,6 +31,7 @@ jobs:
     uses: ./.github/workflows/reusable-deploy.yml
     with: 
       env: "staging"
+    secrets: inherit
     needs: 
       - e2e
       - lighthouse
