@@ -20,7 +20,7 @@ jobs:
     steps:
         - name: call-design-test-step
           run: |
-            curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.gitkey }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/skrubi9/gitactions/actions/workflows/design-test/dispatches -d '{"ref":"main","inputs":{"start-pipeline":"run"}}'
+            curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITKEY }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/skrubi9/gitactions/actions/workflows/design-test/dispatches -d '{"ref":"main","inputs":{"start-pipeline":"run"}}'
     needs: 
         - print-env
 
@@ -30,7 +30,7 @@ jobs:
     steps:
         - name: call-production-deploy-step
           run: |
-            curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.gitkey }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/skrubi9/gitactions/actions/workflows/production/dispatches -d '{"ref":"main","inputs":{"start-pipeline":"run"}}'
+            curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITKEY }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/skrubi9/gitactions/actions/workflows/production/dispatches -d '{"ref":"main","inputs":{"start-pipeline":"run"}}'
     needs: 
       - print-env
 
