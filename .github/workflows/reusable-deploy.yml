@@ -8,26 +8,28 @@ on:
                 type: string
 
 jobs:
-  print-env:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Printer
-        run: echo "Env is ${{ inputs.env }}"
+    print-env:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Printer
+              run: echo "Env is ${{ inputs.env }}"
 
     auto-call-design:
-      - uses: actions/github-script@v6
-      environment: general
-      with:
-        github-token: ${{ secrets.GITKEY }}
-        script: |
-            await github.rest.actions.createWorkflowDispatch({
-                owner: 'skrubi9',
-                repo: 'gitactions',
-                workflow_id: design-test,
-                ref: 'main',
-            });
-      needs: 
-        - print-env
+        runs-on: ubuntu-latest
+        environment: general
+        steps:
+            - uses: actions/github-script@v6
+              with:
+                github-token: ${{ secrets.GITKEY }}
+                script: |
+                    await github.rest.actions.createWorkflowDispatch({
+                        owner: 'skrubi9',
+                        repo: 'gitactions',
+                        workflow_id: design-test,
+                        ref: 'main',
+                    });
+        needs:
+            - print-env
 
 #   auto-call-design:
 #     environment: general
