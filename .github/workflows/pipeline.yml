@@ -28,10 +28,10 @@ jobs:
         run: echo "SONAR"
     needs:
       - test
-  # deploy:
-  #   uses: ./.github/workflows/reusable-deploy.yml
-  #   with: 
-  #     env: "design"
-  #   secrets: inherit
-  #   needs: 
-  #     - sonar
+  deploy:
+    uses: ./.github/workflows/reusable-deploy.yml
+    with: 
+      env: "design"
+    secrets: inherit
+    needs: 
+      - sonar
