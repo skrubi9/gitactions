@@ -11,12 +11,6 @@ on:
           - run
 
 jobs:
-
-  run-deploy:
-    uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml@main
-    with: 
-      env: "production"
-
   manual-approve-deploy:
     name: manual-approve-deploy
     runs-on: ubuntu-latest
@@ -27,7 +21,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/run-deploy
+      - uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml@main
+        with: 
+          env: "production"
     needs: 
       - manual-approve-deploy
 
