@@ -16,10 +16,7 @@ jobs:
         run: echo "BUILD"
   test:
     runs-on: ubuntu-latest
-    # container:
-    #   image: node:20.8.1
     steps:
-      # - uses: actions/checkout@v4.1.0
       - name: Test
         run: echo "TEST"
     needs:
@@ -31,10 +28,10 @@ jobs:
         run: echo "SONAR"
     needs:
       - test
-  deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
-    with: 
-      env: "design"
-    secrets: inherit
-    needs: 
-      - sonar
+  # deploy:
+  #   uses: ./.github/workflows/reusable-deploy.yml
+  #   with: 
+  #     env: "design"
+  #   secrets: inherit
+  #   needs: 
+  #     - sonar

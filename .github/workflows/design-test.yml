@@ -1,38 +1,37 @@
 name: design-test
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       start-pipeline:
+#         required: true
+#         type: choice
+#         description: defines if the workflow shoule be started or not
+#         options: 
+#           - run
+
 on:
-  workflow_dispatch:
-    inputs:
-      start-pipeline:
-        required: true
-        type: choice
-        description: defines if the workflow shoule be started or not
-        options: 
-          - run
-        default: run
+  workflow_run:
+    workflows: [pipeline]
+    types:
+      - completed
 
 jobs:
   e2e:
     runs-on: ubuntu-latest
-    # container:
-    #   image: node:20.8.1
     steps:
-      # - uses: actions/checkout@v4.1.0
       - name: E2E
         run: echo "E2E"
   lighthouse:
     runs-on: ubuntu-latest
-    # container:
-    #   image: node:20.8.1
     steps:
-      # - uses: actions/checkout@v4.1.0
       - name: Lighthouse
-        run: exit 1
-  deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
-    with: 
-      env: "staging"
-    secrets: inherit
-    needs: 
-      - e2e
-      - lighthouse
+        run: exit 1 # echo "LIGHTHOUSE"
+  # deploy:
+  #   uses: ./.github/workflows/reusable-deploy.yml
+  #   with: 
+  #     env: "staging"
+  #   secrets: inherit
+  #   needs: 
+  #     - e2e
+  #     - lighthouse
