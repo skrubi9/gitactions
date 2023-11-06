@@ -34,7 +34,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: skrubi9/gitactions@reusable-deploy.yml@main
+      - uses: skrubi9/gitactions/.github/workflows/reusable-deploy.yml
         with: 
           env: "design"
     needs: 
