@@ -14,7 +14,8 @@ jobs:
       - name: Printer
         run: echo "Env is ${{ inputs.env }}"
 
-  auto-call-design: 
+  auto-call-design:
+    environment: general
     runs-on: ubuntu-latest
     if: ${{inputs.env == 'design' }}
     steps:
@@ -24,7 +25,8 @@ jobs:
     needs: 
         - print-env
 
-  auto-call-production: 
+  auto-call-production:
+    environment: general 
     runs-on: ubuntu-latest
     if: ${{inputs.env == 'staging' }}
     steps:
