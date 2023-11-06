@@ -9,6 +9,7 @@ on:
         description: defines if the workflow shoule be started or not
         options: 
           - run
+        default: run
 
 jobs:
   e2e:
