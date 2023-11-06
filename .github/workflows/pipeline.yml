@@ -33,6 +33,8 @@ jobs:
       - test
   deploy:
     runs-on: ubuntu-latest
+    container:
+      image: node:20.8.1
     steps:
       - uses: actions/checkout@v4.1.0
       - uses: ./.github/workflows/reusable-deploy.yml
