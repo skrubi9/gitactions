@@ -1,4 +1,4 @@
-name: test-ci
+name: design-test
 
 on:
   workflow_dispatch:
