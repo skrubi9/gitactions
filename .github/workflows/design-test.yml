@@ -1,0 +1,39 @@
+name: test-ci
+
+on:
+  workflow_dispatch:
+    inputs:
+      start-pipeline:
+        required: true
+        type: choice
+        description: defines if the workflow shoule be started or not
+        options: 
+          - run
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    # container:
+    #   image: node:20.8.1
+    steps:
+      # - uses: actions/checkout@v4.1.0
+      - name: E2E
+        run: echo "E2E"
+  lighthouse:
+    runs-on: ubuntu-latest
+    # container:
+    #   image: node:20.8.1
+    steps:
+      # - uses: actions/checkout@v4.1.0
+      - name: Lighthouse
+        run: echo "LIGHTHOUSE"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: reusable-deploy@staging
+        with: 
+          env: "staging"
+    needs: 
+      - e2e
+      - lighthouse
+

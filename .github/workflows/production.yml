@@ -1,0 +1,29 @@
+name: test-ci
+
+on:
+  workflow_dispatch:
+    inputs:
+      start-pipeline:
+        required: true
+        type: choice
+        description: defines if the workflow shoule be started or not
+        options: 
+          - run
+
+jobs:
+  manual-approve-deploy:
+    name: manual-approve-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: trstringer/manual-approval@v1
+        with: 
+          approvers: skrubi9
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: reusable-deploy@production
+        with: 
+          env: "production"
+    needs: 
+      - manual-approve-deploy
+
