@@ -12,12 +12,10 @@ on:
 
 jobs:
   manual-approve-deploy:
-    name: manual-approve-deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: trstringer/manual-approval@v1
-        with: 
-          approvers: skrubi9
+      - name: Approve
+        run: echo "Manual approve or create issue (or maybe this is done in spinnaker)"
   deploy:
     uses: ./.github/workflows/reusable-deploy.yml
     with: 
