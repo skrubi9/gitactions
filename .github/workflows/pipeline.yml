@@ -34,7 +34,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: reusable-deploy@design
+      - uses: skrubi9/gitactions@reusable-deploy
         with: 
           env: "design"
     needs: 

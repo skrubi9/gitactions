@@ -30,7 +30,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: reusable-deploy@staging
+      - uses: skrubi9/gitactions@reusable-deploy
         with: 
           env: "staging"
     needs: 
