@@ -17,8 +17,13 @@ jobs:
     steps:
       - name: Approve
         run: echo "Manual approve or create issue (or maybe this is done in spinnaker)"
+  # so everything after here is done in another workflow
+  push-to-ecr:
+    uses: ./.github/workflows/reusable_ecr_push.yml
+    with:
+      region: eu-west-1
   deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/reusable_deploy.yml
     with: 
       env: "production"
     secrets: inherit

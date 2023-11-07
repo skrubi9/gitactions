@@ -1,0 +1,15 @@
+name: ecr push
+
+on:
+    workflow_call:
+        inputs: 
+            region:
+                required: true
+                type: string
+
+jobs:
+    print:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Printer
+              run: echo "Deploy to ecr"
