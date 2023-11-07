@@ -8,12 +8,23 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # container:
-    #   image: node:20.8.1
+    container:
+      image: node:20.8.1
     steps:
-      # - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.0
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: temp
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Build
-        run: echo "BUILD"
+        run: ./node_modules/.bin/nx affected --parallel=false --base=$BASE --target=build --prod
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -21,6 +32,7 @@ jobs:
         run: echo "TEST"
     needs:
       - build
+
   sonar:
     runs-on: ubuntu-latest
     steps:
@@ -28,6 +40,7 @@ jobs:
         run: echo "SONAR"
     needs:
       - test
+
   push-to-ecr-backend:
     uses: ./.github/workflows/reusable_ecr_push.yml
     with:
@@ -36,6 +49,7 @@ jobs:
       ecr_repo: backend
     needs: 
       - sonar
+
   push-to-ecr-backend-cms:
     uses: ./.github/workflows/reusable_ecr_push.yml
     with:
@@ -44,6 +58,7 @@ jobs:
       ecr_repo: cms-backend
     needs: 
       - sonar
+
   push-to-s3-frontend:
     uses: ./.github/workflows/reusable_s3_push.yml
     with:
@@ -51,6 +66,7 @@ jobs:
       artifact_name: nameOfArtifact
     needs: 
       - sonar
+
   push-to-s3-frontend-cms:
     uses: ./.github/workflows/reusable_s3_push.yml
     with:
@@ -58,13 +74,14 @@ jobs:
       artifact_name: nameOfArtifact
     needs: 
       - sonar
-  deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
-    with: 
-      env: "design"
-    secrets: inherit
-    needs: 
-      - push-to-ecr-backend
-      - push-to-ecr-backend-cms
-      - push-to-s3-frontend
-      - push-to-s3-frontend-cms
+
+  # deploy:
+  #   uses: ./.github/workflows/reusable_deploy.yml
+  #   with: 
+  #     env: "design"
+  #   secrets: inherit
+  #   needs: 
+  #     - push-to-ecr-backend
+  #     - push-to-ecr-backend-cms
+  #     - push-to-s3-frontend
+  #     - push-to-s3-frontend-cms
