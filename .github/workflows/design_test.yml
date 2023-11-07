@@ -1,4 +1,4 @@
-name: design-test
+name: design test
 
 on:
   workflow_dispatch:
