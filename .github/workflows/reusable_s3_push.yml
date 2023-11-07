@@ -1,0 +1,44 @@
+name: Reusable AWS S3 Deployment Workflow
+
+on:
+    workflow_call:
+        inputs:
+            environment:
+                description: 'Environment to be deployed to'
+                required: true
+                type: string
+            artifact_name:
+                description: 'Name of artifact to be fetched'
+                required: true
+                type: string
+
+permissions:
+    id-token: write
+
+jobs:
+    print:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Printer
+              run: echo "Deploy to ecr"
+    # deploy:
+    #     name: Deploy to S3
+    #     runs-on: ubuntu-latest
+    #     environment: ${{ inputs.environment }}
+    #     steps:
+    #     - name: Fetch artifact
+    #         uses: actions/download-artifact@v3
+    #         with:
+    #         name: ${{ inputs.artifact_name }}
+    #         path: dist
+
+    #     - name: Configure AWS Credentials
+    #         uses: aws-actions/configure-aws-credentials@v3
+    #         with:
+    #         role-to-assume: ${{ vars.AWS_S3_BUCKET_ACCESS_ROLE }}
+    #         aws-region: ${{ vars.AWS_REGION }}
+
+    #     - name: Sync files with S3
+    #         run: |
+    #         echo "Uploading to S3..."
+    #         aws s3 sync --delete ./dist ${{ vars.AWS_S3_BUCKET_PATH }}

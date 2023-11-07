@@ -1,11 +1,28 @@
-name: ecr push
+name: Reusable workflow to build and push docker image to ECR
 
 on:
     workflow_call:
-        inputs: 
-            region:
+        inputs:
+            assume_role:
+                description: AWS Role that will be used to login to ECR
                 required: true
                 type: string
+            aws_region:
+                description: AWS Region
+                required: false
+                default: eu-central-1
+                type: string
+            ecr_repo:
+                description: ECR Repository
+                required: true
+                type: string
+        outputs:
+            version:
+                value: ${{ jobs.build-and-push-to-ecr.outputs.version }}
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
 
 jobs:
     print:
@@ -13,3 +30,36 @@ jobs:
         steps:
             - name: Printer
               run: echo "Deploy to ecr"
+    # build-and-push-to-ecr:
+    #     name: Build, tag, and push
+    #     runs-on: ubuntu-latest
+    #     outputs:
+    #     version: ${{ steps.tag.outputs.version }}
+    #     steps:
+    #     - name: Checkout
+    #         uses: actions/checkout@v3
+
+    #     - name: Extract tag name
+    #         id: tag
+    #         run: echo "version=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_OUTPUT"
+
+    #     - name: Configure AWS Credentials
+    #         uses: aws-actions/configure-aws-credentials@v3
+    #         with:
+    #         role-to-assume: ${{ inputs.assume_role }}
+    #         aws-region: ${{ inputs.aws_region }}
+    #         mask-aws-account-id: 'no'
+
+    #     - name: Login to Amazon ECR
+    #         id: login-ecr
+    #         uses: aws-actions/amazon-ecr-login@v1
+
+    #     - name: Build, tag, and push image to AWS ECR
+    #         id: build-image
+    #         env:
+    #         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+    #         ECR_REPOSITORY: ${{ inputs.ecr_repo }}
+    #         IMAGE_TAG: ${{ steps.tag.outputs.version }}
+    #         run: |
+    #         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg app_version=$IMAGE_TAG . 
+    #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
