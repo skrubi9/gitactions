@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: ./node_modules/.bin/nx affected --parallel=false --base=$BASE --target=build --prod
+        run: ./node_modules/.bin/nx affected --parallel=false --target=build --prod
 
   test:
     runs-on: ubuntu-latest
