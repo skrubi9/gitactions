@@ -11,13 +11,14 @@ on:
           - run
 
 jobs:
+  # maybe open here an issue - if that issue is resolved trigger deploy pipeline
   manual-approve-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Approve
         run: echo "Manual approve or create issue (or maybe this is done in spinnaker)"
   deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/reusable/reusable-deploy.yml
     with: 
       env: "production"
     secrets: inherit

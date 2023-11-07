@@ -22,7 +22,7 @@ jobs:
       - name: Lighthouse
         run: echo "LIGHTHOUSE"
   deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/reusable/reusable-deploy.yml
     with: 
       env: "staging"
     secrets: inherit

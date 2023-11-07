@@ -1,4 +1,4 @@
-name: reusable-deploy
+name: reusable deploy
 
 on:
     workflow_call:
@@ -14,6 +14,7 @@ jobs:
             - name: Printer
               run: echo "Env is ${{ inputs.env }}"
 
+    # will be done by spinnaker
     auto-call-design:
         environment: general
         runs-on: ubuntu-latest
@@ -25,6 +26,7 @@ jobs:
         needs: 
             - print-env
 
+    # will be done by spinnaker
     auto-call-production:
         environment: general 
         runs-on: ubuntu-latest
