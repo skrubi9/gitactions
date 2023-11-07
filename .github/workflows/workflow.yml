@@ -12,16 +12,23 @@ jobs:
       image: node:20.8.1
     steps:
       - uses: actions/checkout@v4.1.0
-
+      - name: Define current base
+        run: |-
+          BASE=main~1
+          if [ "${{ github.ref }}" = "staging" ]; then
+            BASE=staging~1
+          elif [ "${{ github.ref }}" = "production" ]; then
+            BASE=production~1
+          fi
+          echo "export BASE=$BASE" >> $BASH_ENV
+          echo $BASE
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: npm
-
       - name: Install dependencies
         run: npm install
-
       - name: Build
         run: ./node_modules/.bin/nx affected --parallel=false --target=build --prod
 
