@@ -18,7 +18,7 @@ jobs:
       - name: Approve
         run: echo "Manual approve or create issue (or maybe this is done in spinnaker)"
   deploy:
-    uses: ./.github/workflows/reusable/reusable-deploy.yml
+    uses: ./.github/workflows/reusable-deploy.yml
     with: 
       env: "production"
     secrets: inherit
