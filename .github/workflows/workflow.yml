@@ -29,7 +29,7 @@ jobs:
     needs:
       - test
   deploy:
-    uses: ./.github/workflows/reusable/reusable-deploy.yml
+    uses: ./.github/workflows/reusable-deploy.yml
     with: 
       env: "design"
     secrets: inherit
