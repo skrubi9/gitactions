@@ -1,0 +1,6 @@
+node_modules/*
+.angular
+.husky
+tools/*
+dist/*
+.DS_Store
