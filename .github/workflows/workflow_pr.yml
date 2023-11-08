@@ -31,11 +31,11 @@ jobs:
       - name: Create a dummy .env file to be able to run the tests
         run: touch .env
       - name: Run Linter on affected projects
-        run: nx affected --target=lint --maxWarnings=100
+        run: ./node_modules/.bin/nx affected --target=lint --maxWarnings=100
       - name: Test affected projects
-        run: NODE_OPTIONS="--max_old_space_size=8192" nx affected --target=test --maxWorkers=4
+        run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --maxWorkers=4
       - name: Build
-        run: nx affected --target=build --parallel=false --prod
+        run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
       - name: Store the version
         run: |-
           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
