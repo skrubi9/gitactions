@@ -6,93 +6,99 @@ on:
       - main
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
-    container:
-      image: node:20.8.1
-    steps:
-      # step before to gather vault secrets
-      - uses: actions/checkout@v4.1.0
-        with:
-          fetch-depth: 0
-      - name: Create .npmrc
-        run: cp .npmrc.template .npmrc
-      - name: Use Node.js 20.8.1
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.8.1
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Create a dummy .env file to be able to run the tests
-        run: touch .env
-      - name: Run Linter on affected projects
-        run: |-
-          echo $BASE
-          ./node_modules/.bin/nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
-      - name: Test affected projects
-        run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --base=${{ github.base_ref }} --maxWorkers=4
-      - name: Build
-        run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=${{ github.base_ref }} --head=${{ github.head_ref }} --prod"
-      - name: Store the version
-        run: |-
-          export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-          echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
-          echo "Stored version " `cat VERSION`
+  print:
+      runs-on: ubuntu-latest
+      steps:
+          - name: Printer
+            run: echo ${{ github.sha }}
 
-  sonar:
-    name: SonarQube Trigger
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checking out
-      uses: actions/checkout@master
-      with:
-        fetch-depth: 0
-    # - name: SonarQube Scan
-    #   uses: kitabisa/sonarqube-action@v1.2.0
-    #   with:
-    #     host: ${{ secrets.SONARQUBE_HOST }}
-    #     login: ${{ secrets.SONARQUBE_TOKEN }}
+# build-and-test:
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: node:20.8.1
+  #   steps:
+  #     # step before to gather vault secrets
+  #     - uses: actions/checkout@v4.1.0
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Create .npmrc
+  #       run: cp .npmrc.template .npmrc
+  #     - name: Use Node.js 20.8.1
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20.8.1
+  #         cache: npm
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     - name: Create a dummy .env file to be able to run the tests
+  #       run: touch .env
+  #     - name: Run Linter on affected projects
+  #       run: |-
+  #         echo $BASE
+  #         ./node_modules/.bin/nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
+  #     - name: Test affected projects
+  #       run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --base=${{ github.base_ref }} --maxWorkers=4
+  #     - name: Build
+  #       run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=${{ github.base_ref }} --head=${{ github.head_ref }} --prod"
+  #     - name: Store the version
+  #       run: |-
+  #         export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+  #         echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
+  #         echo "Stored version " `cat VERSION`
 
-  push-to-ecr-backend:
-    uses: ./.github/workflows/reusable_ecr_push.yml
-    with:
-      aws_region: eu-west-1
-      assume_role: assume role
-      ecr_repo: backend
-    needs: 
-      - sonar
-      - build-and-test
+  # sonar:
+  #   name: SonarQube Trigger
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checking out
+  #     uses: actions/checkout@master
+  #     with:
+  #       fetch-depth: 0
+  #   # - name: SonarQube Scan
+  #   #   uses: kitabisa/sonarqube-action@v1.2.0
+  #   #   with:
+  #   #     host: ${{ secrets.SONARQUBE_HOST }}
+  #   #     login: ${{ secrets.SONARQUBE_TOKEN }}
 
-  push-to-ecr-backend-cms:
-    uses: ./.github/workflows/reusable_ecr_push.yml
-    with:
-      aws_region: eu-west-1
-      assume_role: assume role
-      ecr_repo: cms-backend
-    needs: 
-      - sonar
-      - build-and-test
+  # push-to-ecr-backend:
+  #   uses: ./.github/workflows/reusable_ecr_push.yml
+  #   with:
+  #     aws_region: eu-west-1
+  #     assume_role: assume role
+  #     ecr_repo: backend
+  #   needs: 
+  #     - sonar
+  #     - build-and-test
 
-  push-to-s3-frontend:
-    uses: ./.github/workflows/reusable_s3_push.yml
-    with:
-      environment: frontend
-      artifact_name: nameOfArtifact
-    needs: 
-      - sonar
-      - build-and-test
+  # push-to-ecr-backend-cms:
+  #   uses: ./.github/workflows/reusable_ecr_push.yml
+  #   with:
+  #     aws_region: eu-west-1
+  #     assume_role: assume role
+  #     ecr_repo: cms-backend
+  #   needs: 
+  #     - sonar
+  #     - build-and-test
 
-  push-to-s3-frontend-cms:
-    uses: ./.github/workflows/reusable_s3_push.yml
-    with:
-      environment: cms-frontend
-      artifact_name: nameOfArtifact
-    needs: 
-      - sonar
-      - build-and-test
+  # push-to-s3-frontend:
+  #   uses: ./.github/workflows/reusable_s3_push.yml
+  #   with:
+  #     environment: frontend
+  #     artifact_name: nameOfArtifact
+  #   needs: 
+  #     - sonar
+  #     - build-and-test
 
-  deploy:
+  # push-to-s3-frontend-cms:
+  #   uses: ./.github/workflows/reusable_s3_push.yml
+  #   with:
+  #     environment: cms-frontend
+  #     artifact_name: nameOfArtifact
+  #   needs: 
+  #     - sonar
+  #     - build-and-test
+
+  # deploy:
     uses: ./.github/workflows/reusable_deploy.yml
     with: 
       env: "design"
