@@ -12,6 +12,8 @@ jobs:
       image: node:20.8.1
     steps:
       - uses: actions/checkout@v4.1.0
+        with:
+          ref: main
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
@@ -20,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: ./node_modules/.bin/nx affected --parallel=false --base=remotes/origin/main~1 --target=build --prod
+        run: ./node_modules/.bin/nx affected --parallel=false --base=main --target=build --prod
 
   test:
     runs-on: ubuntu-latest
