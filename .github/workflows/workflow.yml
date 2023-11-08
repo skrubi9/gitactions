@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: "./node_modules/.bin/nx affected --parallel=false --base=main~1 --target=build --prod"
+        run: "./node_modules/.bin/nx affected -- --target=build --parallel=false --base=remotes/origin/main --head=HEAD --prod"
 
   test:
     runs-on: ubuntu-latest
