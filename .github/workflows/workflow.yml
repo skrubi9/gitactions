@@ -33,9 +33,7 @@ jobs:
         - name: Create a dummy .env file to be able to run the tests
           run: touch .env
         - name: Run Linter on affected projects
-          run: |-
-            echo $BASE
-            ./node_modules/.bin/nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
+          run: ./node_modules/.bin/nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
         - name: Test affected projects
           run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --base=${{ github.base_ref }} --maxWorkers=4
         - name: Build
