@@ -6,6 +6,12 @@ on:
       - main
 
 jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        run: echo "${{ github.ref }}"
+
   build:
     runs-on: ubuntu-latest
     container:
@@ -21,9 +27,9 @@ jobs:
           node-version: 20
           cache: npm
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build
-        run: ./node_modules/.bin/nx affected --parallel=false --base=main --target=build --prod
+        run: "./node_modules/.bin/nx affected --parallel=false --base=main~1 --target=build --prod"
 
   test:
     runs-on: ubuntu-latest
