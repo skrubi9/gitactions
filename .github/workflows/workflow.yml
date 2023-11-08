@@ -6,15 +6,6 @@ on:
       - main
 
 jobs:
-  print:
-      runs-on: ubuntu-latest
-      steps:
-          - name: Printer
-            run: |-
-              echo ${{ github.sha }}
-              echo ${{ github.base_ref }}
-              echo ${{ github.head_ref }}
-
   build-and-test:
       runs-on: ubuntu-latest
       container:
@@ -36,11 +27,11 @@ jobs:
         - name: Create a dummy .env file to be able to run the tests
           run: touch .env
         - name: Run Linter on affected projects
-          run: ./node_modules/.bin/nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
+          run: ./node_modules/.bin/nx affected --target=lint --base=${{ github.sha }} --maxWarnings=100
         - name: Test affected projects
-          run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --base=${{ github.base_ref }} --maxWorkers=4
+          run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --base=${{ github.sha }} --maxWorkers=4
         - name: Build
-          run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=${{ github.base_ref }} --head=${{ github.head_ref }} --prod"
+          run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=${{ github.sha }}~1 --head=${{ github.sha }} --prod"
         - name: Store the version
           run: |-
             export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
