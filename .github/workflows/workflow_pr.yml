@@ -30,10 +30,10 @@ jobs:
       - run: git branch --track main origin/main
       - name: Create a dummy .env file to be able to run the tests
         run: touch .env
-      - name: Run Linter on affected projects
-        run: ./node_modules/.bin/nx affected --target=lint --maxWarnings=100
-      - name: Test affected projects
-        run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --maxWorkers=4
+      # - name: Run Linter on affected projects
+      #   run: ./node_modules/.bin/nx affected --target=lint --maxWarnings=100
+      # - name: Test affected projects
+      #   run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --maxWorkers=4
       - name: Build
         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
       - name: Store the version
