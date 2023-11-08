@@ -4,7 +4,7 @@ import {
 
 /**
  * Used as base to be able to have different layouts loaded for the application (e.g. rootcomponent)
- * and the embed page which does not need root components loaded sfsf
+ * and the embed page which does not need root components loaded sfsfassdf
  */
 @Component({
   selector: 'app',

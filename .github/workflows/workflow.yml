@@ -74,13 +74,13 @@ jobs:
     needs: 
       - sonar
 
-  # deploy:
-  #   uses: ./.github/workflows/reusable_deploy.yml
-  #   with: 
-  #     env: "design"
-  #   secrets: inherit
-  #   needs: 
-  #     - push-to-ecr-backend
-  #     - push-to-ecr-backend-cms
-  #     - push-to-s3-frontend
-  #     - push-to-s3-frontend-cms
+  deploy:
+    uses: ./.github/workflows/reusable_deploy.yml
+    with: 
+      env: "design"
+    secrets: inherit
+    needs: 
+      - push-to-ecr-backend
+      - push-to-ecr-backend-cms
+      - push-to-s3-frontend
+      - push-to-s3-frontend-cms
