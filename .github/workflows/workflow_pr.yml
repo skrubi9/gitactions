@@ -3,6 +3,8 @@ name: pr pipeline
 on:
   pull_request:
     types: [opened, edited]
+    branches:
+      - main
 
 jobs:
   build-and-test:
