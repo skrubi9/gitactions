@@ -25,14 +25,16 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - uses: nrwl/nx-set-shas@v3
+      - run: git branch --track main origin/main
       - name: Create a dummy .env file to be able to run the tests
         run: touch .env
       - name: Run Linter on affected projects
-        run: npx nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
+        run: nx affected --target=lint --base=${{ github.base_ref }} --maxWarnings=100
       - name: Test affected projects
-        run: NODE_OPTIONS="--max_old_space_size=8192" npx nx affected --target=test --base=${{ github.base_ref }} --maxWorkers=4
+        run: NODE_OPTIONS="--max_old_space_size=8192" nx affected --target=test --base=${{ github.base_ref }} --maxWorkers=4
       - name: Build
-        run: "npx nx affected --target=build --parallel=false --base=${{ github.base_ref }} --head=${{ github.head_ref }} --prod"
+        run: nx affected --target=build --parallel=false --base=${{ github.base_ref }} --head=${{ github.head_ref }} --prod
       - name: Store the version
         run: |-
           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
