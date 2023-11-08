@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print
-        run: echo "${{ github.ref }}"
+        run: echo "${{ github.event.pull_request.base.sha }}"
 
   build:
     runs-on: ubuntu-latest
