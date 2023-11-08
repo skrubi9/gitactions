@@ -5,6 +5,15 @@ on:
     types: [opened, edited]
 
 jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Printer
+          run: |-
+            echo ${{ github.sha }}
+            echo ${{ github.base_ref }}
+            echo ${{ github.head_ref }}
+            
   build-and-test:
     runs-on: ubuntu-latest
     container:
