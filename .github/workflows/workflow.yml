@@ -6,14 +6,17 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     container:
       image: node:20.8.1
     steps:
+      # step before to gather vault secrets
       - uses: actions/checkout@v4.1.0
         with:
           fetch-depth: 0
+      - name: Create .npmrc
+        run: cp .npmrc.template .npmrc
       - name: Use Node.js 20
         uses: actions/setup-node@v3
         with:
@@ -21,24 +24,35 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Create a dummy .env file to be able to run the tests
+        run: touch .env
+      - name: Run Linter on affected projects
+        run: |-
+          echo $BASE
+          ./node_modules/.bin/nx affected --target=lint --base=$BASE --maxWarnings=100
+      - name: Test affected projects
+        run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --base=$BASE --coverage --coverageReporters=lcov --maxWorkers=4 --reporters=default --reporters=jest-junit
       - name: Build
-        run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=main --head=HEAD --prod"
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test
-        run: echo "TEST"
-    needs:
-      - build
+        run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=${{ github.base_ref }} --head=${{ github.head_ref }} --prod"
+      - name: Store the version
+        run: |-
+          export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+          echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
+          echo "Stored version " `cat VERSION`
 
   sonar:
+    name: SonarQube Trigger
     runs-on: ubuntu-latest
     steps:
-      - name: Sonar check
-        run: echo "SONAR"
-    needs:
-      - test
+    - name: Checking out
+      uses: actions/checkout@master
+      with:
+        fetch-depth: 0
+    # - name: SonarQube Scan
+    #   uses: kitabisa/sonarqube-action@v1.2.0
+    #   with:
+    #     host: ${{ secrets.SONARQUBE_HOST }}
+    #     login: ${{ secrets.SONARQUBE_TOKEN }}
 
   push-to-ecr-backend:
     uses: ./.github/workflows/reusable_ecr_push.yml
