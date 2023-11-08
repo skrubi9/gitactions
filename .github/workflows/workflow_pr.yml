@@ -1,0 +1,40 @@
+name: pr pipeline
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node:20.8.1
+    steps:
+      - uses: actions/checkout@v4.1.0
+        with:
+          fetch-depth: 0
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: "./node_modules/.bin/nx affected --target=build --parallel=false --base=main --head=HEAD --prod"
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo "TEST"
+    needs:
+      - build
+
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sonar check
+        run: echo "SONAR"
+    needs:
+      - test
