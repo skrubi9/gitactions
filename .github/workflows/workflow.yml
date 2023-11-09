@@ -1,9 +1,17 @@
 name: pipeline
 
 on:
-  push:
-    branches:
-      - main
+#   push:
+#     branches:
+#       - main
+  workflow_dispatch:
+    inputs:
+      start-pipeline:
+        required: true
+        type: choice
+        description: defines if the workflow shoule be started or not
+        options: 
+          - run
 
 jobs:
   build-and-test:
