@@ -11,21 +11,27 @@ on:
           - run
 
 jobs:
-  e2e:
+  fail:
     runs-on: ubuntu-latest
     steps:
-      - name: E2E
-        run: echo "E2E"
-  lighthouse:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Lighthouse
-        run: echo "LIGHTHOUSE"
-  deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
-    with: 
-      env: "staging"
-    secrets: inherit
-    needs: 
-      - e2e
-      - lighthouse
+      - name: fail on purpose
+        run: exit 1
+
+  # e2e:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: E2E
+  #       run: echo "E2E"
+  # lighthouse:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Lighthouse
+  #       run: echo "LIGHTHOUSE"
+  # deploy:
+  #   uses: ./.github/workflows/reusable_deploy.yml
+  #   with: 
+  #     env: "staging"
+  #   secrets: inherit
+  #   needs: 
+  #     - e2e
+  #     - lighthouse
