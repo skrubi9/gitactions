@@ -13,12 +13,17 @@ on:
   #       options: 
   #         - run
 
+env:
+  VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}
+
 jobs:
   build-and-test:
       runs-on: ubuntu-latest
       container:
         image: node:20.8.1
       steps:
+        - name: test
+          run: echo $VAULT_ADDR
         # step before to gather vault secrets
         - uses: actions/checkout@v4.1.0
           with:
