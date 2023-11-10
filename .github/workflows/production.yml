@@ -1,17 +1,12 @@
 name: production
 
 on:
-  workflow_dispatch:
-    inputs:
-      start-pipeline:
-        required: true
-        type: choice
-        description: defines if the workflow shoule be started or not
-        options: 
-          - run
+  issues:
+    types: [closed] # maybe "labeled"
 
 jobs:
   deploy:
+    if: ${{ github.event.label.name == 'deploy' }}
     uses: ./.github/workflows/reusable_deploy.yml
     with: 
       env: "production"
