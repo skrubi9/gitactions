@@ -2,7 +2,7 @@ name: production
 
 on:
   issues:
-    types: [closed] # maybe "labeled"
+    types: [closed]
 
 jobs:
   deploy:
