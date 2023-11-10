@@ -20,4 +20,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create github issue
-        run: cat issue_template.md | github-issue create
+        run: cat ./../../issue_template.md | github-issue create
