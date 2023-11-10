@@ -1,4 +1,4 @@
-name: production
+name: issue
 
 on:
   workflow_dispatch:
@@ -11,8 +11,8 @@ on:
           - run
 
 jobs:
-  deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
-    with: 
-      env: "production"
-    secrets: inherit
+  manual-approve-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create github issue
+        run: cat issue_template.md | github-issue create
