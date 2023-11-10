@@ -27,7 +27,7 @@ jobs:
             - print-env
 
     # will be done by spinnaker
-    auto-call-production:
+    auto-call-issue-creation:
         environment: general 
         runs-on: ubuntu-latest
         if: ${{inputs.env == 'staging' }}

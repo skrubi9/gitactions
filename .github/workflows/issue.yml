@@ -1,14 +1,19 @@
 name: issue
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       start-pipeline:
+#         required: true
+#         type: choice
+#         description: defines if the workflow shoule be started or not
+#         options: 
+#           - run
+
 on:
-  workflow_dispatch:
-    inputs:
-      start-pipeline:
-        required: true
-        type: choice
-        description: defines if the workflow shoule be started or not
-        options: 
-          - run
+  push:
+    branches:
+      - main
 
 jobs:
   manual-approve-deploy:
