@@ -15,6 +15,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  issues: write 
+
 jobs:
   manual-approve-deploy:
     runs-on: ubuntu-latest
