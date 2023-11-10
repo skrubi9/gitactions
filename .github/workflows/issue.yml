@@ -19,5 +19,6 @@ jobs:
   manual-approve-deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4.1.0
       - name: Create github issue
-        run: cat ./../../issue_template.md | github-issue create
+        run: cat issue_template.md | github-issue create
