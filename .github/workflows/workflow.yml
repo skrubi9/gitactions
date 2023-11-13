@@ -9,6 +9,14 @@ env:
   VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}
 
 jobs:
+  test:        
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env
+        run: echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+      - name: Test
+        run: echo $GITHUB_SHA_SHORT
+
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     container:
@@ -97,13 +105,13 @@ jobs:
   #     - sonar
   #     - build-and-test
 
-  deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
-    with: 
-      env: "design"
-    secrets: inherit
-    # needs: 
-    #   - push-to-ecr-backend
-    #   - push-to-ecr-backend-cms
-    #   - push-to-s3-frontend
-    #   - push-to-s3-frontend-cms
+  # deploy:
+  #   uses: ./.github/workflows/reusable_deploy.yml
+  #   with: 
+  #     env: "design"
+  #   secrets: inherit
+  #   needs: 
+  #     - push-to-ecr-backend
+  #     - push-to-ecr-backend-cms
+  #     - push-to-s3-frontend
+  #     - push-to-s3-frontend-cms
