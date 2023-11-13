@@ -50,6 +50,7 @@ jobs:
     ## merge changes from staging -> production
     ## call production spinnaker pipeline
     do-production-deploy:
+        environment: general 
         runs-on: ubuntu-latest
         if: ${{inputs.env == 'production' }}
         steps:
