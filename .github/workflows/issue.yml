@@ -8,14 +8,14 @@ name: issue
 #         type: choice
 #         description: defines if the workflow shoule be started or not
 #         options: 
-#           - run
+#           - run 
 
 on:
   pull_request:
     types: [opened, synchronize]
     branches:
       - main
-      
+
 permissions:
   contents: read
   issues: write 
