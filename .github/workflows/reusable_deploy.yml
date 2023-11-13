@@ -53,6 +53,7 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{inputs.env == 'production' }}
         steps:
+            - uses: actions/checkout@master
             - name: Merge staging -> production
               uses: devmasx/merge-branch@master
               with:
