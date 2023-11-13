@@ -27,7 +27,7 @@ jobs:
       - name: create an issue
         uses: dacbd/create-issue-action@main
         with:
-          token: ${{ secrets.GITKEY }}
+          token: ${{ github.token }}
           title: Simple test issue
           body: my new issue
           
