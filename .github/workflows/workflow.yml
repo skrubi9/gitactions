@@ -1,14 +1,9 @@
 name: pipeline
 
 on:
-  workflow_dispatch:
-    inputs:
-      start-pipeline:
-        required: true
-        type: choice
-        description: defines if the workflow shoule be started or not
-        options: 
-          - run
+  push:
+    branches:
+      - main
 
 env:
   VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}

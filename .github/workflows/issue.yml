@@ -1,20 +1,14 @@
 name: issue
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       start-pipeline:
-#         required: true
-#         type: choice
-#         description: defines if the workflow shoule be started or not
-#         options: 
-#           - run 
-
 on:
-  pull_request:
-    types: [opened, synchronize]
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      start-pipeline:
+        required: true
+        type: choice
+        description: defines if the workflow shoule be started or not
+        options: 
+          - run 
 
 permissions:
   contents: read
@@ -32,5 +26,7 @@ jobs:
           title: Deploy ${{ github.event.pull_request.title }} to Production
           body: |
             Number of commits: ${{ github.event.pull_request.commits }}
-            URL: ${{ github.event.pull_request.html_url }}
+            URL: ${{ github.event.pull_request.html_url }}#
+
+            Close ticket to merge changes into Production. 
           labels: deploy
