@@ -59,7 +59,7 @@ jobs:
                 type: now
                 target_branch: production
                 message: Merge staging into production
-                github_token: ${{ github.token }}
+                github_token: ${{ secrets.GITKEY }}
             - name: do-prod-deploy
               run: echo "DO PROD DEPLOY"
         needs:
