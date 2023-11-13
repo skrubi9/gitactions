@@ -29,6 +29,9 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Deploy ${{ github.event.pull_request.commits_url }} to Production
-          body: Number of commits ${{ github.event.pull_request.commits }}
+          title: Deploy ${{ github.event.pull_request.title }} to Production
+          body: |
+            Number of commits: ${{ github.event.pull_request.commits }}
+            PR diff: ${{ github.event.pull_request.diff_url }}
+            URL: ${{ github.event.pull_request.url }}
           labels: deploy
