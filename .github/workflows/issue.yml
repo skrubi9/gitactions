@@ -11,10 +11,11 @@ name: issue
 #           - run
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize]
     branches:
       - main
-
+      
 permissions:
   contents: read
   issues: write 
