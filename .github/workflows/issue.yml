@@ -32,6 +32,5 @@ jobs:
           title: Deploy ${{ github.event.pull_request.title }} to Production
           body: |
             Number of commits: ${{ github.event.pull_request.commits }}
-            PR diff: ${{ github.event.pull_request.diff_url }}
-            URL: ${{ github.event.pull_request.url }}
+            URL: ${{ github.event.pull_request.html_url }}
           labels: deploy
