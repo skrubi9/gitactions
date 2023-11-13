@@ -23,7 +23,14 @@ jobs:
   manual-approve-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
-      - uses: JasonEtco/create-an-issue@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITKEY }} 
+      - uses: actions/checkout@v3
+      - name: create an issue
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ secrets.GITKEY }}
+          title: Simple test issue
+          body: my new issue
+          
+          
+          
+          
