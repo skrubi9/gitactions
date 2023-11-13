@@ -28,8 +28,9 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Simple test issue
-          body: my new issue
+          title: Deploy to Production
+          body: ${{ github.job }}
+          labels: deploy
           
           
           
