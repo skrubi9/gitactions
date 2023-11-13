@@ -4,7 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - main
+      - test
 
 env:
   VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}

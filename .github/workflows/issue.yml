@@ -8,14 +8,14 @@ name: issue
 #         type: choice
 #         description: defines if the workflow shoule be started or not
 #         options: 
-#           - run
+#           - run 
 
 on:
   pull_request:
     types: [opened, synchronize]
     branches:
       - main
-      
+
 permissions:
   contents: read
   issues: write 
@@ -29,10 +29,8 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Deploy to Production
-          body: ${{ github.event.pull_request.title }}
+          title: Deploy ${{ github.event.pull_request.title }} to Production
+          body: |
+            Number of commits: ${{ github.event.pull_request.commits }}
+            URL: ${{ github.event.pull_request.html_url }}
           labels: deploy
-          
-          
-          
-          
