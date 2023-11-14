@@ -5,34 +5,28 @@ on:
     branches:
       - main
 
-env:
-  VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}
-
 jobs:
   build-and-test:
       runs-on: ubuntu-latest
       container:
         image: node:20.8.1
       steps:
-        # - name: test
-        #   run: echo $VAULT_ADDR
-        # # step before to gather vault secrets
-        # - uses: actions/checkout@v4.1.0
-        #   with:
-        #     fetch-depth: 0
-        # - name: Create .npmrc
-        #   run: cp .npmrc.template .npmrc
-        # - name: Use Node.js 20
-        #   uses: actions/setup-node@v3
-        #   with:
-        #     node-version: 20
-        #     cache: npm
-        # - name: Install dependencies
-        #   run: npm ci
-        # - uses: nrwl/nx-set-shas@v3
-        # - run: git config --global --add safe.directory /__w/gitactions/gitactions
-        # - name: Create a dummy .env file to be able to run the tests
-        #   run: touch .env
+        - uses: actions/checkout@v4.1.0
+          with:
+            fetch-depth: 0
+        - name: Create .npmrc
+          run: cp .npmrc.template .npmrc
+        - name: Use Node.js 20
+          uses: actions/setup-node@v3
+          with:
+            node-version: 20
+            cache: npm
+        - name: Install dependencies
+          run: npm ci
+        - uses: nrwl/nx-set-shas@v3
+        - run: git config --global --add safe.directory /__w/gitactions/gitactions
+        - name: Create a dummy .env file to be able to run the tests
+          run: touch .env
         - name: Build
           run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
         - name: Store the version
