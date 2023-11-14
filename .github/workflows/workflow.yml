@@ -58,7 +58,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: buildfiles
-      - run: echo "$(cat VERSION)"
+      - run: docker push $(cat VERSION)
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
