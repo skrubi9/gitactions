@@ -58,8 +58,12 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: buildfiles
-      - run: docker push $(cat VERSION)
-
+      - name: Build, tag, and push image to AWS ECR
+        id: build-image
+        env:
+          VERSION: cat Version
+        run: docker push ${{ env.VERSION }}
+        
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
   #   with:
