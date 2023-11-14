@@ -61,7 +61,7 @@ jobs:
       - name: Build, tag, and push image to AWS ECR
         id: build-image
         run: |-
-          export VERSION=${cat VERSION}
+          export VERSION=cat VERSION
           docker push $VERSION
     needs:
       - build-and-test
