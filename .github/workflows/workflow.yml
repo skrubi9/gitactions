@@ -6,50 +6,61 @@ on:
       - main
 
 jobs:
-  build-and-test:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4.1.0
-          with:
-            fetch-depth: 0
-        - name: Create .npmrc
-          run: cp .npmrc.template .npmrc
-        - name: Use Node.js 20
-          uses: actions/setup-node@v3
-          with:
-            node-version: 20
-            cache: npm
-        - name: Install dependencies
-          run: npm ci
-        - uses: nrwl/nx-set-shas@v3
-        - run: git config --global --add safe.directory /__w/gitactions/gitactions
-        - name: Create a dummy .env file to be able to run the tests
-          run: touch .env
-        - name: Build
-          run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
-        - name: Store the version
-          run: |-
-            export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-            echo "$BUILD_VERSION" > VERSION
-            echo "Stored version " `cat VERSION`
-        - uses: actions/upload-artifact@v3
-          with:
-            name: buildfiles
-            path: |-
-              ./dist/*
-              ./VERSION
-              ./.npmrc
-  other-job:
+  # build-and-test:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v4.1.0
+  #         with:
+  #           fetch-depth: 0
+  #       - name: Create .npmrc
+  #         run: cp .npmrc.template .npmrc
+  #       - name: Use Node.js 20
+  #         uses: actions/setup-node@v3
+  #         with:
+  #           node-version: 20
+  #           cache: npm
+  #       - name: Install dependencies
+  #         run: npm ci
+  #       - uses: nrwl/nx-set-shas@v3
+  #       - run: git config --global --add safe.directory /__w/gitactions/gitactions
+  #       - name: Create a dummy .env file to be able to run the tests
+  #         run: touch .env
+  #       - name: Build
+  #         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
+  #       - name: Store the version
+  #         run: |-
+  #           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+  #           echo "$BUILD_VERSION" > VERSION
+  #           echo "Stored version " `cat VERSION`
+  #       - uses: actions/upload-artifact@v3
+  #         with:
+  #           name: buildfiles
+  #           path: |-
+  #             ./dist/*
+  #             ./VERSION
+  #             ./.npmrc
+  # other-job:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Fetch artifact
+  #       uses: actions/download-artifact@v3.0.2
+  #       with:
+  #         name: buildfiles
+  #     - name: print version
+  #       run: cat VERSION
+  #   needs:
+  #     - build-and-test
+
+  job:
+    name: job
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch artifact
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name: buildfiles
-      - name: print version
-        run: cat VERSION
-    needs:
-      - build-and-test
+      - name: create file
+        run: touch testfile.html
+      - name: check file
+        if: ('./testfile.html')
+        run: |-
+          echo "is here"
 
 
   # push-to-ecr-backend:
