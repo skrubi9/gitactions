@@ -61,9 +61,9 @@ jobs:
       - name: Build, tag, and push image to AWS ECR
         id: build-image
         env:
-          VERSION: cat Version
+          VERSION: $(cat VERSION)
         run: docker push ${{ env.VERSION }}
-        
+
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
   #   with:
