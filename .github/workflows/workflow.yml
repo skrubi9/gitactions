@@ -47,7 +47,7 @@ jobs:
         with:
           name: buildfiles
       - name: print version
-        run: cat "this is the $(VERSION)"
+        run: cat "this is the $VERSION"
     needs:
       - build-and-test
 
