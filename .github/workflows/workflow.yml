@@ -17,6 +17,7 @@ jobs:
               ./dist/*
               ./VERSION
               ./.npmrc
+
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     steps:
@@ -57,7 +58,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: buildfiles
-      run: echo "$VERSION"
+      - run: echo "$VERSION"
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
