@@ -30,7 +30,7 @@ jobs:
         - name: Store the version
           run: |-
             export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-            echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
+            echo "$BUILD_VERSION" > VERSION
             echo "Stored version " `cat VERSION`
         - uses: actions/upload-artifact@v3
           with:
