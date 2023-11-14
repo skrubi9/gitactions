@@ -14,7 +14,7 @@ jobs:
         env:
           ECR_REGISTRY: 'test'
         run: |
-          echo $ECR_REGISTRY
+          echo "${{ env.ECR_REGISTRY }}"
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     steps:
