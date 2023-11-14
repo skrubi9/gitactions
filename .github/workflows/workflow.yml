@@ -46,7 +46,7 @@ jobs:
         with:
           path: "."
       - name: print version
-        run: echo $VERSION
+        run: cat VERSION
     needs:
       - build-and-test
 
