@@ -30,8 +30,8 @@ jobs:
         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
       - name: Store the version
         run: |-
-          export BUILD_VERSION=$(git rev-parse --abbrev-ref head)-$(git rev-parse --short head)
-          echo "$BUILD_VERSION" > VERSION
+          export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+          echo "$BUILD_VERSION-${{github.run_number}}" > VERSION
           echo "Stored version " `cat VERSION`
       - uses: actions/upload-artifact@v3
         with:
