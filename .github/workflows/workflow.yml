@@ -8,8 +8,6 @@ on:
 jobs:
   build-and-test:
       runs-on: ubuntu-latest
-      container:
-        image: node:20.8.1
       steps:
         - uses: actions/checkout@v4.1.0
           with:
@@ -34,6 +32,24 @@ jobs:
             export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
             echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
             echo "Stored version " `cat VERSION`
+        - uses: actions/upload-artifact@v3
+          with:
+            path: |-
+              ./dist/*
+              ./VERSION
+              ./.npmrc
+  other-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch artifact
+        uses: actions/download-artifact@v3.0.2
+        with:
+          path: "."
+      - name: print version
+        run: echo $VERSION
+    needs:
+      - build-and-test
+
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
