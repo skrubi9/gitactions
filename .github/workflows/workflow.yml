@@ -55,12 +55,16 @@ jobs:
     name: job
     runs-on: ubuntu-latest
     steps:
-      # - name: create file
-        # run: touch testfile.html
+      - name: create file
+        run: touch testfile.html
       - name: check file
         if: ('./testfile.html')
         run: |-
           echo "is here"
+      - name: check file
+        if: ('./test.html')
+        run: |-
+         echo "is here"
 
 
   # push-to-ecr-backend:
