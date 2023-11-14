@@ -9,7 +9,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-        - run: echo "ljsdkflskadfksdöfk" > VERSION
+        - run: echo "blabla" > VERSION
         - uses: actions/upload-artifact@v3
           with:
             name: buildfiles
