@@ -34,6 +34,7 @@ jobs:
             echo "Stored version " `cat VERSION`
         - uses: actions/upload-artifact@v3
           with:
+            name: buildfiles
             path: |-
               ./dist/*
               ./VERSION
@@ -44,7 +45,7 @@ jobs:
       - name: Fetch artifact
         uses: actions/download-artifact@v3.0.2
         with:
-          path: "."
+          name: buildfiles
       - name: print version
         run: cat VERSION
     needs:
