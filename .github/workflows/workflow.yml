@@ -60,11 +60,9 @@ jobs:
           name: buildfiles
       - name: Build, tag, and push image to AWS ECR
         id: build-image
-        env:
-          VERSION: $(cat VERSION)
         run: |-
-          echo ${{ env.VERSION }}
-          docker push ${{ env.VERSION }}
+          export VERSION=${cat VERSION}
+          docker push $VERSION
     needs:
       - build-and-test
 
