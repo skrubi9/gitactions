@@ -9,12 +9,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Build, tag, and push image to AWS ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: 'test'
-        run: |
-          echo "${{ env.ECR_REGISTRY }}"
+        - run: echo "test" > VERSION
+        - uses: actions/upload-artifact@v3
+          with:
+            name: buildfiles
+            path: |-
+              ./dist/*
+              ./VERSION
+              ./.npmrc
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     steps:
@@ -48,6 +50,14 @@ jobs:
   #             ./dist/*
   #             ./VERSION
   #             ./.npmrc
+
+  other-job: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: buildfiles
+      run: echo "$VERSION"
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
