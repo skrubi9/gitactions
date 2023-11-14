@@ -6,19 +6,15 @@ on:
       - main
 
 jobs:
-
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Store the version
-        run: |-
-          echo "test" > VERSION
-          echo "Stored version " `cat VERSION`
-      - uses: actions/upload-artifact@v3
-        with:
-          name: buildfiles
-          path: |-
-            ./VERSION
+      - name: Build, tag, and push image to AWS ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: 'test'
+        run: |
+          echo $ECR_REGISTRY
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     steps:
@@ -52,18 +48,6 @@ jobs:
   #             ./dist/*
   #             ./VERSION
   #             ./.npmrc
-  other-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch artifact
-        uses: actions/download-artifact@v3.0.2
-        with:
-          name: buildfiles
-      - name: print version
-        run: echo "this is the $(cat VERSION)"
-    needs:
-      - build-and-test
-
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
