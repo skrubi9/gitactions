@@ -39,4 +39,4 @@ jobs:
           path: |-
             ./dist/*
             ./VERSION
-            ./.npmrc
+            ./.npmrc 
