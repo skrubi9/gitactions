@@ -39,7 +39,6 @@ jobs:
               ./dist/*
               ./VERSION
               ./.npmrc
-    
   other-job: 
     runs-on: ubuntu-latest
     steps:
@@ -56,6 +55,8 @@ jobs:
           IMAGE_TAG: $(cat VERSION)
         run: |
           echo ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+    needs: 
+      - build-and-test
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
