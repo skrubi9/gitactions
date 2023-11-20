@@ -41,7 +41,7 @@ jobs:
   #           ./VERSION
   #           ./.npmrc
   lighthouse:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
         contents: read
         id-token: write
@@ -53,6 +53,7 @@ jobs:
         with:
           node-version: 20
       - uses: browser-actions/setup-chrome@v1
+      # - uses: nanasess/setup-chromedriver@v2
       - name: Run lhci
         run: |
           npm install -g @lhci/cli@0.12.x
