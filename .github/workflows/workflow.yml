@@ -12,6 +12,8 @@ jobs:
         - uses: actions/checkout@v4.1.0
           with:
             fetch-depth: 0
+        - name: print branch
+          run: echo ${{github.head_ref}}
         - name: Create .npmrc
           run: cp .npmrc.template .npmrc
         - name: Use Node.js 20
