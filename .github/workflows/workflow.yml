@@ -11,6 +11,13 @@ jobs:
     steps: 
       - name: test
         run: echo "Test"
+  deploy:
+    uses: ./.github/workflows/reusable_deploy.yml
+    with: 
+      env: "design"
+    secrets: inherit
+    needs: 
+      - test
 
   # build-and-test:
   #     runs-on: ubuntu-latest
@@ -82,10 +89,10 @@ jobs:
   #   needs: 
   #     - build-and-test
 
-  deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
-    with: 
-      env: "design"
-    secrets: inherit
-    needs: 
-      - test
+  # deploy:
+  #   uses: ./.github/workflows/reusable_deploy.yml
+  #   with: 
+  #     env: "design"
+  #   secrets: inherit
+  #   needs: 
+  #     - test
