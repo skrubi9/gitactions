@@ -11,20 +11,21 @@ on:
           - run
 
 jobs:
-  # e2e:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: E2E
-  #       run: echo "E2E"
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: E2E
+        run: echo "E2E"
   # lighthouse:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Lighthouse
   #       run: echo "LIGHTHOUSE"
   deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
+    uses: ./.github/workflows/merge.yml
     with: 
-      env: "staging"
+      source: "main"
+      target: "staging"
     secrets: inherit
     # needs: 
     #   - e2e
