@@ -5,87 +5,94 @@ on:
     branches:
       - main
 
-env:
-  VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}
-
 jobs:
-  build-and-test:
-      runs-on: ubuntu-latest
-      container:
-        image: node:20.8.1
-      steps:
-        - name: test
-          run: echo $VAULT_ADDR
-        # step before to gather vault secrets
-        - uses: actions/checkout@v4.1.0
-          with:
-            fetch-depth: 0
-        - name: Create .npmrc
-          run: cp .npmrc.template .npmrc
-        - name: Use Node.js 20
-          uses: actions/setup-node@v3
-          with:
-            node-version: 20
-            cache: npm
-        - name: Install dependencies
-          run: npm ci
-        - uses: nrwl/nx-set-shas@v3
-        - run: git config --global --add safe.directory /__w/gitactions/gitactions
-        - name: Create a dummy .env file to be able to run the tests
-          run: touch .env
-        # - name: Run Linter on affected projects
-        #   run: ./node_modules/.bin/nx affected --target=lint --maxWarnings=100
-        # - name: Test affected projects
-        #   run: NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --maxWorkers=4
-        - name: Build
-          run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
-        - name: Store the version
-          run: |-
-            export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-            echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
-            echo "Stored version " `cat VERSION`
-
-  push-to-ecr-backend:
-    uses: ./.github/workflows/reusable_ecr_push.yml
-    with:
-      aws_region: eu-west-1
-      assume_role: assume role
-      ecr_repo: backend
-    needs: 
-      - build-and-test
-
-  push-to-ecr-backend-cms:
-    uses: ./.github/workflows/reusable_ecr_push.yml
-    with:
-      aws_region: eu-west-1
-      assume_role: assume role
-      ecr_repo: cms-backend
-    needs: 
-      - build-and-test
-
-  push-to-s3-frontend:
-    uses: ./.github/workflows/reusable_s3_push.yml
-    with:
-      environment: frontend
-      artifact_name: nameOfArtifact
-    needs: 
-      - build-and-test
-
-  push-to-s3-frontend-cms:
-    uses: ./.github/workflows/reusable_s3_push.yml
-    with:
-      environment: cms-frontend
-      artifact_name: nameOfArtifact
-    needs: 
-      - build-and-test
-
+  test:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: test
+        run: echo "Test"
   deploy:
     uses: ./.github/workflows/reusable_deploy.yml
     with: 
       env: "design"
     secrets: inherit
     needs: 
-      - push-to-ecr-backend
-      - push-to-ecr-backend-cms
-      - push-to-s3-frontend
-      - push-to-s3-frontend-cms
+      - test
+
+  # build-and-test:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v4.1.0
+  #         with:
+  #           fetch-depth: 0
+  #       - name: print branch
+  #         run: echo ${{github.head_ref}}
+  #       - name: Create .npmrc
+  #         run: cp .npmrc.template .npmrc
+  #       - name: Use Node.js 20
+  #         uses: actions/setup-node@v3
+  #         with:
+  #           node-version: 20
+  #           cache: npm
+  #       - name: Install dependencies
+  #         run: npm ci
+  #       - uses: nrwl/nx-set-shas@v3
+  #       - run: git config --global --add safe.directory /__w/gitactions/gitactions
+  #       - name: Create a dummy .env file to be able to run the tests
+  #         run: touch .env
+  #       - name: Build
+  #         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
+  #       - name: Store the version
+  #         run: |-
+  #           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+  #           echo "$BUILD_VERSION" > VERSION
+  #           echo "Stored version " `cat VERSION`
+  #       - uses: actions/upload-artifact@v3
+  #         with:
+  #           name: buildfiles
+  #           path: |-
+  #             ./dist/*
+  #             ./VERSION
+  #             ./.npmrc
+
+  # push-to-ecr-backend:
+  #   uses: ./.github/workflows/reusable_ecr_push.yml
+  #   with:
+  #     aws_region: eu-west-1
+  #     assume_role: assume role
+  #     ecr_repo: backend
+  #   needs: 
+  #     - build-and-test
+
+  # push-to-ecr-backend-cms:
+  #   uses: ./.github/workflows/reusable_ecr_push.yml
+  #   with:
+  #     aws_region: eu-west-1
+  #     assume_role: assume role
+  #     ecr_repo: cms-backend
+  #   needs: 
+  #     - build-and-test
+
+  # push-to-s3-frontend:
+  #   uses: ./.github/workflows/reusable_s3_push.yml
+  #   with:
+  #     environment: frontend
+  #     artifact_name: nameOfArtifact
+  #   needs: 
+  #     - build-and-test
+
+  # push-to-s3-frontend-cms:
+  #   uses: ./.github/workflows/reusable_s3_push.yml
+  #   with:
+  #     environment: cms-frontend
+  #     artifact_name: nameOfArtifact
+  #   needs: 
+  #     - build-and-test
+
+  # deploy:
+  #   uses: ./.github/workflows/reusable_deploy.yml
+  #   with: 
+  #     env: "design"
+  #   secrets: inherit
+  #   needs: 
+  #     - test
