@@ -5,9 +5,9 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  issues: write 
+# permissions:
+#   contents: read
+#   issues: write 
 
 jobs:
   manual-approve-deploy:
@@ -18,7 +18,7 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Deploy ${{ github.event.pull_request.title }} to Production
+          title: Deploy ${{ github.event.pull_request.title }} to Production Test
           body: |
             Number of commits: ${{ github.event.pull_request.commits }}
             URL: ${{ github.event.pull_request.html_url }}#
