@@ -5,28 +5,16 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  issues: write 
-
-jobs:
-  manual-approve-deploy:
+jobs:  
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: create an issue
-        uses: dacbd/create-issue-action@main
+      - uses: actions/checkout@v4.1.0
         with:
-          token: ${{ github.token }}
-          title: Deploy ${{ github.event.pull_request.title }} to Production Test
-          body: |
-            Number of commits: ${{ github.event.pull_request.commits }}
-            URL: ${{ github.event.pull_request.html_url }}#
+          fetch-depth: 0
+      - name: print branch
+        run: echo ${{ github.head_ref }}
 
-            Close ticket to merge changes in to Production. 
-          labels: deploy
-
-      
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     steps:
@@ -103,4 +91,4 @@ jobs:
   #     env: "design"
   #   secrets: inherit
   #   needs: 
-  #     - test
+  #     - build-and-test
