@@ -10,9 +10,9 @@ on:
         options: 
           - run 
 
-permissions:
-  contents: read
-  issues: write 
+# permissions:
+#   contents: read
+#   issues: write 
 
 jobs:
   manual-approve-deploy:
