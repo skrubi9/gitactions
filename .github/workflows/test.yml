@@ -11,11 +11,11 @@ on:
           - run
 
 jobs:
-  # e2e:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: E2E
-  #       run: echo "E2E"
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: E2E
+        run: echo "E2E"
   # lighthouse:
   #   runs-on: ubuntu-latest
   #   steps:

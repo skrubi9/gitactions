@@ -5,41 +5,69 @@ on:
     branches:
       - main
 
-env:
-  VAULT_ADDR: ${{ vars.ORG_VAULT_ADDR }}
+permissions:
+  contents: read
+  issues: write 
 
 jobs:
-  build-and-test:
-      runs-on: ubuntu-latest
-      container:
-        image: node:20.8.1
-      steps:
-        # - name: test
-        #   run: echo $VAULT_ADDR
-        # # step before to gather vault secrets
-        # - uses: actions/checkout@v4.1.0
-        #   with:
-        #     fetch-depth: 0
-        # - name: Create .npmrc
-        #   run: cp .npmrc.template .npmrc
-        # - name: Use Node.js 20
-        #   uses: actions/setup-node@v3
-        #   with:
-        #     node-version: 20
-        #     cache: npm
-        # - name: Install dependencies
-        #   run: npm ci
-        # - uses: nrwl/nx-set-shas@v3
-        # - run: git config --global --add safe.directory /__w/gitactions/gitactions
-        # - name: Create a dummy .env file to be able to run the tests
-        #   run: touch .env
-        - name: Build
-          run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
-        - name: Store the version
-          run: |-
-            export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-            echo "$BUILD_VERSION-$CIRCLE_BUILD_NUM" > VERSION
-            echo "Stored version " `cat VERSION`
+  manual-approve-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: create an issue
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: Deploy ${{ github.event.pull_request.title }} to Production
+          body: |
+            Number of commits: ${{ github.event.pull_request.commits }}
+            URL: ${{ github.event.pull_request.html_url }}#
+
+            Close ticket to merge changes into Production. 
+          labels: deploy
+
+
+
+
+
+
+
+      
+  # build-and-test:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #       - uses: actions/checkout@v4.1.0
+  #         with:
+  #           fetch-depth: 0
+  #       - name: print branch
+  #         run: echo ${{github.head_ref}}
+  #       - name: Create .npmrc
+  #         run: cp .npmrc.template .npmrc
+  #       - name: Use Node.js 20
+  #         uses: actions/setup-node@v3
+  #         with:
+  #           node-version: 20
+  #           cache: npm
+  #       - name: Install dependencies
+  #         run: npm ci
+  #       - uses: nrwl/nx-set-shas@v3
+  #       - run: git config --global --add safe.directory /__w/gitactions/gitactions
+  #       - name: Create a dummy .env file to be able to run the tests
+  #         run: touch .env
+  #       - name: Build
+  #         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
+  #       - name: Store the version
+  #         run: |-
+  #           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+  #           echo "$BUILD_VERSION" > VERSION
+  #           echo "Stored version " `cat VERSION`
+  #       - uses: actions/upload-artifact@v3
+  #         with:
+  #           name: buildfiles
+  #           path: |-
+  #             ./dist/*
+  #             ./VERSION
+  #             ./.npmrc
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml
@@ -81,7 +109,4 @@ jobs:
   #     env: "design"
   #   secrets: inherit
   #   needs: 
-  #     - push-to-ecr-backend
-  #     - push-to-ecr-backend-cms
-  #     - push-to-s3-frontend
-  #     - push-to-s3-frontend-cms
+  #     - test
