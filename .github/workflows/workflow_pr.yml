@@ -4,7 +4,9 @@ on:
   pull_request:
     types: [opened, synchronize]
     branches:
-      - main   
+      - main
+      - staging
+      - production
 
 jobs:
   build-and-test:
