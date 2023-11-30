@@ -23,14 +23,8 @@ jobs:
             Number of commits: ${{ github.event.pull_request.commits }}
             URL: ${{ github.event.pull_request.html_url }}#
 
-            Close ticket to merge changes into Production. 
+            Close ticket to merge changes in to Production. 
           labels: deploy
-
-
-
-
-
-
 
       
   # build-and-test:
