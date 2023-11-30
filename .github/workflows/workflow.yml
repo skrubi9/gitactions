@@ -5,21 +5,26 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  issues: write 
+
 jobs:
-  test:
+  manual-approve-deploy:
     runs-on: ubuntu-latest
-    steps: 
-      - name: print branch
-        run: echo ${{github.head_ref}}
-  deploy:
-    uses: ./.github/workflows/reusable_deploy.yml
-    with: 
-      env: "design"
-    secrets: inherit
-    needs: 
-      - test
+    steps:
+      - uses: actions/checkout@v3
+      - name: create an issue
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: Deploy ${{ github.event.pull_request.title }} to Production
+          body: |
+            Number of commits: ${{ github.event.pull_request.commits }}
+            URL: ${{ github.event.pull_request.html_url }}#
 
-
+            Close ticket to merge changes into Production. 
+          labels: deploy
 
 
 
