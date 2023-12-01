@@ -30,6 +30,7 @@ jobs:
     uses: ./.github/workflows/reusable_push_artifactory.yml
     with:
       artifact_name: ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
+      artifact_name_2: ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
     needs: 
       - push-to-s3-frontend-cms
 
