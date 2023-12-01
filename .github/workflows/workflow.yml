@@ -1,10 +1,13 @@
 name: pipeline
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize]
     branches:
       - main
-
+      - staging
+      - production
+      
 jobs: 
   printer:
     runs-on: ubuntu-latest
