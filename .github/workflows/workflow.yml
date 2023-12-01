@@ -1,11 +1,19 @@
 name: pipeline
 
-on:
-  repository_dispatch:
-    types: 
-      - run-post-spinnaker
+# curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer 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" --request POST --data '{"event_type": "run-post-spinnaker", "client_payload": { "create-issue": "true"} }' https://api.github.com/repos/skrubi9/gitactions/dispatches
 
-jobs:  
+on:
+  push:
+    branches:
+      - main
+
+jobs: 
+  push-to-s3-frontend-cms:
+    uses: ./.github/workflows/reusable_s3_push.yml
+    with:
+      environment: cms-frontend
+      artifact_name: nameOfArtifact
+
   build-and-test:
     runs-on: ubuntu-latest
     steps:
@@ -14,7 +22,9 @@ jobs:
           fetch-depth: 0
       - name: print branch
         run: |
-          echo ${{ github.event.client_payload.create-issue-only }}
+          echo ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
+    needs: 
+      - push-to-s3-frontend-cms
 
   # build-and-test:
   #     runs-on: ubuntu-latest
