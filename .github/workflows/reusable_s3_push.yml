@@ -14,7 +14,7 @@ on:
         outputs:
             artifact-built:
                 description: "Defines if a new artifact was built and deployed to artifactory"
-                value: ${{ jobs.publish.outputs.artifact-built }}
+                value: ${{ jobs.print.outputs.artifact-built }}
 
 # permissions:
 #     id-token: write
@@ -27,7 +27,7 @@ jobs:
         steps:
             - name: Printer
               run: echo "exists=false" >> "$GITHUB_OUTPUT"
-              
+
     # deploy:
     #     name: Deploy to S3
     #     runs-on: ubuntu-latest
