@@ -8,7 +8,7 @@ on:
 jobs: 
   printer:
     runs-on: ubuntu-latest
-    steps:
+    steps: 
       - name: print output
         run: |
           echo ${{ github.base_ref }}
