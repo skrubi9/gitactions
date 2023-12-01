@@ -12,7 +12,7 @@ on:
 
 jobs:
     print:
-        if: (${{inputs.artifact_name}} == 'true' && ${{inputs.artifact_name_2}} == 'true')
+        if: (inputs.artifact_name == 'true' && inputs.artifact_name_2 == 'true')
         runs-on: ubuntu-latest
         steps:
             - name: Printer
