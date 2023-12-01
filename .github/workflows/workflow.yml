@@ -1,7 +1,5 @@
 name: pipeline
 
-# curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer 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" --request POST --data '{"event_type": "run-post-spinnaker", "client_payload": { "create-issue": "true"} }' https://api.github.com/repos/skrubi9/gitactions/dispatches
-
 on:
   push:
     branches:
@@ -14,9 +12,6 @@ jobs:
       - name: print output
         run: |
           echo ${{ github.base_ref }}
-    needs: 
-      - push-to-s3-frontend-cms
-
 
   push-to-s3-frontend-cms:
     if: (github.base_ref == 'main')
