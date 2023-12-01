@@ -27,7 +27,7 @@ jobs:
         steps:
             - name: Printer
               id: check
-              run: echo "exists=false" >> "$GITHUB_OUTPUT"
+              run: echo exists=false >> "$GITHUB_OUTPUT"
 
     # deploy:
     #     name: Deploy to S3
