@@ -5,10 +5,9 @@ on:
         inputs: 
             artifact_name:
                 required: true
-                type: string
-            artifact_directory:
-                required: true
-                type: string
+                type: boolean
+
+                
 jobs:
     print:
         runs-on: ubuntu-latest

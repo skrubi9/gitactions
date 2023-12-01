@@ -26,6 +26,13 @@ jobs:
     needs: 
       - push-to-s3-frontend-cms
 
+  push-to-art-frontend-cms:
+    uses: ./.github/workflows/reusable_push_artifactory.yml
+    with:
+      artifact_name: ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
+    needs: 
+      - push-to-s3-frontend-cms
+
   # build-and-test:
   #     runs-on: ubuntu-latest
   #     steps:
