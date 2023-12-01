@@ -5,15 +5,17 @@ on:
         inputs: 
             artifact_name:
                 required: true
-                type: boolean
+                type: string
 
-                
+
 jobs:
     print:
+        if: ${{inputs.artifact_name}} === 'true'
         runs-on: ubuntu-latest
         steps:
             - name: Printer
               run: echo "Env is ${{ inputs.artifact_name }}"
+
     # toArtifactory:
     #     uses: actions/upload-artifact@v3
     #     with:
