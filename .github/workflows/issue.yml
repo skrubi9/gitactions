@@ -24,3 +24,4 @@ jobs:
           source_branch: main
           target_branch: staging
           title: My pull request
+          get_diff: true
