@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: general
     steps:
+      - uses: actions/checkout@v4.1.0
+        with:
+          fetch-depth: 0
       - name: Run the Action
         uses: devops-infra/action-pull-request@v0.5.5
         with:
