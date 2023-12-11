@@ -22,4 +22,3 @@ jobs:
           title: Merge to branch via evans
           branch: staging
           base: main
-
