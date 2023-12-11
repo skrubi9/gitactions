@@ -6,75 +6,44 @@ on:
       - main
 
 jobs: 
-  printer:
-    runs-on: ubuntu-latest
-    steps:
-      - name: print output
-        run: |
-          echo ${{ github.base_ref }}
-
-  push-to-s3-frontend-cms:
-    if: (github.base_ref == 'main')
-    uses: ./.github/workflows/reusable_s3_push.yml
-    with:
-      environment: cms-frontend
-      artifact_name: nameOfArtifact
-
   build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.0
-        with:
-          fetch-depth: 0
-      - name: print output
-        run: |
-          echo ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
-    needs: 
-      - push-to-s3-frontend-cms
-
-  push-to-art-frontend-cms:
-    uses: ./.github/workflows/reusable_push_artifactory.yml
-    with:
-      artifact_name: ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
-      artifact_name_2: ${{ needs.push-to-s3-frontend-cms.outputs.artifact-built }}
-    needs: 
-      - push-to-s3-frontend-cms
-
-  # build-and-test:
-  #     runs-on: ubuntu-latest
-  #     steps:
-  #       - uses: actions/checkout@v4.1.0
-  #         with:
-  #           fetch-depth: 0
-  #       - name: print branch
-  #         run: echo ${{github.head_ref}}
-  #       - name: Create .npmrc
-  #         run: cp .npmrc.template .npmrc
-  #       - name: Use Node.js 20
-  #         uses: actions/setup-node@v3
-  #         with:
-  #           node-version: 20
-  #           cache: npm
-  #       - name: Install dependencies
-  #         run: npm ci
-  #       - uses: nrwl/nx-set-shas@v3
-  #       - run: git config --global --add safe.directory /__w/gitactions/gitactions
-  #       - name: Create a dummy .env file to be able to run the tests
-  #         run: touch .env
-  #       - name: Build
-  #         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
-  #       - name: Store the version
-  #         run: |-
-  #           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-  #           echo "$BUILD_VERSION" > VERSION
-  #           echo "Stored version " `cat VERSION`
-  #       - uses: actions/upload-artifact@v3
-  #         with:
-  #           name: buildfiles
-  #           path: |-
-  #             ./dist/*
-  #             ./VERSION
-  #             ./.npmrc
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4.1.0
+          with:
+            fetch-depth: 0
+        - name: print branch
+          run: echo ${{github.head_ref}}
+        - name: Create .npmrc
+          run: cp .npmrc.template .npmrc
+        - name: Use Node.js 20
+          uses: actions/setup-node@v3
+          with:
+            node-version: 20
+            cache: npm
+        - name: Install dependencies
+          run: npm ci
+        - uses: nrwl/nx-set-shas@v3
+        - run: git config --global --add safe.directory /__w/gitactions/gitactions
+        - name: Create a dummy .env file to be able to run the tests
+          run: touch .env
+        - name: Build
+          run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
+        - name: Store the version
+          run: |-
+            export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
+            echo "$BUILD_VERSION" > VERSION
+            echo "Stored version " `cat VERSION`
+        - name: Set Directory as Safe for nx sha action
+          run: |
+            git config --system --add safe.directory "$GITHUB_WORKSPACE"
+        - uses: actions/upload-artifact@v3
+          with:
+            name: buildfiles
+            path: |-
+              ./dist/*
+              ./VERSION
+              ./.npmrc
 
   # push-to-ecr-backend:
   #   uses: ./.github/workflows/reusable_ecr_push.yml

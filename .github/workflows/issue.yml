@@ -3,7 +3,7 @@ name: issue
 on:
   push:
     branches:
-      - main
+      - nobranchspecified
 
 permissions:
   contents: read
