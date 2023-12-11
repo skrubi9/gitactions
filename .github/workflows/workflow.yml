@@ -8,6 +8,10 @@ on:
 jobs: 
   build-and-test:
       runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        id-token: write
+        actions: read
       steps:
         - uses: actions/checkout@v4.1.0
           with:
@@ -37,7 +41,6 @@ jobs:
             export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
             echo "$BUILD_VERSION" > VERSION
             echo "Stored version " `cat VERSION`
-
         - uses: actions/upload-artifact@v3
           with:
             name: buildfiles
