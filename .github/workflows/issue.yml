@@ -1,12 +1,9 @@
 name: issue
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  push:
     branches:
       - main
-      - staging
-      - production
 
 # on:
 #   workflow_dispatch:
@@ -47,4 +44,4 @@ jobs:
         with:
           token: ${{ github.token }}
           title: Merge to branch
-          
+
