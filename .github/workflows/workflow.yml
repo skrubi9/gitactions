@@ -8,7 +8,7 @@ on:
 jobs: 
 
   create-pr:
-    if: ${{ github.event.client_payload.env }} === 'staging'
+    if: ${{ github.event.client_payload.env }} == 'staging'
     runs-on: ubuntu-latest
     steps:
       - name: "Pull secrets from Vault"
