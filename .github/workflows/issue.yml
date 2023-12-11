@@ -5,37 +5,11 @@ on:
     branches:
       - main
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       start-pipeline:
-#         required: true
-#         type: choice
-#         description: defines if the workflow shoule be started or not
-#         options: 
-#           - run 
-
 permissions:
   contents: read
   pull-requests: write
 
 jobs:
-  # manual-approve-deploy:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: create an issue
-  #       uses: dacbd/create-issue-action@main
-  #       with:
-  #         token: ${{ github.token }}
-  #         title: Deploy ${{ github.event.pull_request.title }} to Production
-  #         body: |
-  #           Number of commits: ${{ github.event.pull_request.commits }}
-  #           URL: ${{ github.event.pull_request.html_url }}#
-
-  #           Close ticket to merge changes into Production. 
-  #         labels: deploy
-
   create-pr:
     runs-on: ubuntu-latest
     environment: general
