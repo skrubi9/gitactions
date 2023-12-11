@@ -20,6 +20,6 @@ jobs:
         with:
           token: ${{ secrets.GITKEY }}
           title: Merge to branch via evans
-          branch: staing
+          branch: staging
           base: main
 
