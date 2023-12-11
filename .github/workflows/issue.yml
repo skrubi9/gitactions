@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: general
     steps:
-      - uses: actions/checkout@v3
-      - name: Open PR Merge
-        uses: peter-evans/create-pull-request@v5
+      - name: Run the Action
+        uses: devops-infra/action-pull-request@v0.5.5
         with:
-          token: ${{ secrets.GITKEY }}
-          title: Merge to branch via evans
-          base: main
+          github_token: ${{ secrets.GITKEY }}
+          source_branch: main
+          target_branch: staging
+          title: My pull request
