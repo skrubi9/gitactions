@@ -35,15 +35,37 @@ jobs:
 
   #           Close ticket to merge changes into Production. 
   #         labels: deploy
+
   create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Pull Request
+        run: |
+          PAYLOAD=$(cat <<EOF
+            {
+              "title": "Title of my PR",
+              "body": "Automated PR to ...",
+              "head": "${BRANCH_NAME}",
+              "base": "main"
+            }
+          EOF
+          )
+          curl https://api.github.com/repos/my-user/other-repo/pulls \
+            --header "Authorization: token ${ TOKEN }" \
+            -H "Content-Type:application/json" \
+            -d "$PAYLOAD"
+        env:
+          TOKEN: ${{ github.token }}
+
+  create-pr-2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Open PR Merge
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ github.token }}
-          title: Merge to branch
+          token: ${{ secrets.GITKEY }}
+          title: Merge to branch via evans
           branch: main
           base: staging
 
