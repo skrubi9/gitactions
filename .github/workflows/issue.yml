@@ -44,6 +44,6 @@ jobs:
         with:
           token: ${{ github.token }}
           title: Merge to branch
-          branch: staging
-          base: main
+          branch: main
+          base: staging
 
