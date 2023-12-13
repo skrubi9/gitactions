@@ -6,97 +6,28 @@ on:
       - run-post-spinnaker
 
 jobs: 
-
-  create-pr:
-    if: ${{ github.event.client_payload.env }} == 'staging'
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: "Pull secrets from Vault"
-        run: echo ${{ github.event.client_payload.env }}
+      - uses: actions/checkout@v4.1.0
+        with:
+          fetch-depth: 0
+      - name: print branch
+        run: |
+          echo ref ${{ github.ref }}
+          echo head_ref ${{ github.head_ref }}
+          echo base_ref ${{ github.base_ref }}
+  
+  if-test: 
+    if: ${{ github.base_ref }} === 'main'
+    runs-on: ubuntu-latest
+    name: Deploy to 
+    steps:
+      - run: echo "=== main"
 
-
-
-  # build-and-test:
-  #     runs-on: ubuntu-latest
-  #     permissions:
-  #       contents: read
-  #       id-token: write
-  #       actions: read
-  #     steps:
-  #       - uses: actions/checkout@v4.1.0
-  #         with:
-  #           fetch-depth: 0
-  #       - name: print branch
-  #         run: echo ${{github.head_ref}}
-  #       - name: Create .npmrc
-  #         run: cp .npmrc.template .npmrc
-  #       - name: Use Node.js 20
-  #         uses: actions/setup-node@v3
-  #         with:
-  #           node-version: 20
-  #           cache: npm
-  #       - name: Install dependencies
-  #         run: npm ci
-  #       - run: echo "$GITHUB_WORKSPACE"        
-  #       - name: Set Directory as Safe for nx sha action
-  #         run: |
-  #           git config --system --add safe.directory "$GITHUB_WORKSPACE"        
-  #       - uses: nrwl/nx-set-shas@v4
-  #       - name: Create a dummy .env file to be able to run the tests
-  #         run: touch .env
-  #       - name: Build
-  #         run: ./node_modules/.bin/nx affected --target=build --parallel=false --prod
-  #       - name: Store the version
-  #         run: |-
-  #           export BUILD_VERSION=$(git rev-parse --abbrev-ref HEAD)-$(git rev-parse --short HEAD)
-  #           echo "$BUILD_VERSION" > VERSION
-  #           echo "Stored version " `cat VERSION`
-  #       - uses: actions/upload-artifact@v3
-  #         with:
-  #           name: buildfiles
-  #           path: |-
-  #             ./dist/*
-  #             ./VERSION
-  #             ./.npmrc
-
-  # push-to-ecr-backend:
-  #   uses: ./.github/workflows/reusable_ecr_push.yml
-  #   with:
-  #     aws_region: eu-west-1
-  #     assume_role: assume role
-  #     ecr_repo: backend
-  #   needs: 
-  #     - build-and-test
-
-  # push-to-ecr-backend-cms:
-  #   uses: ./.github/workflows/reusable_ecr_push.yml
-  #   with:
-  #     aws_region: eu-west-1
-  #     assume_role: assume role
-  #     ecr_repo: cms-backend
-  #   needs: 
-  #     - build-and-test
-
-  # push-to-s3-frontend:
-  #   uses: ./.github/workflows/reusable_s3_push.yml
-  #   with:
-  #     environment: frontend
-  #     artifact_name: nameOfArtifact
-  #   needs: 
-  #     - build-and-test
-
-  # push-to-s3-frontend-cms:
-  #   uses: ./.github/workflows/reusable_s3_push.yml
-  #   with:
-  #     environment: cms-frontend
-  #     artifact_name: nameOfArtifact
-  #   needs: 
-  #     - build-and-test
-
-  # deploy:
-  #   uses: ./.github/workflows/reusable_deploy.yml
-  #   with: 
-  #     env: "design"
-  #   secrets: inherit
-  #   needs: 
-  #     - build-and-test
+  if-test-2: 
+    if: ${{ github.base_ref }} !== 'main'
+    runs-on: ubuntu-latest
+    name: Deploy to 
+    steps:
+      - run: echo "!== main"
