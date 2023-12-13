@@ -19,14 +19,14 @@ jobs:
           echo base_ref ${{ github.base_ref }}
   
   if-test: 
-    if: ${{ github.base_ref }} === 'main'
+    if: (${{ github.base_ref }} === 'main')
     runs-on: ubuntu-latest
     name: Deploy to 
     steps:
       - run: echo "=== main"
 
   if-test-2: 
-    if: ${{ github.base_ref }} !== 'main'
+    if: (${{ github.base_ref }} !== 'main')
     runs-on: ubuntu-latest
     name: Deploy to 
     steps:
