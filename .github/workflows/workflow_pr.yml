@@ -7,6 +7,7 @@ on:
       - main
       - staging
       - production
+      - test
 
 jobs: 
   build-and-test:
@@ -20,17 +21,4 @@ jobs:
           echo ref ${{ github.ref }}
           echo head_ref ${{ github.head_ref }}
           echo base_ref ${{ github.base_ref }}
-  
-  if-test: 
-    if: ${{ github.base_ref }} === 'main'
-    runs-on: ubuntu-latest
-    name: Deploy to 
-    steps:
-      - run: echo "=== main"
-
-  if-test-2: 
-    if: ${{ github.base_ref }} !== 'main'
-    runs-on: ubuntu-latest
-    name: Deploy to 
-    steps:
-      - run: echo "!== main"
+          echo ref.head ${{ github.ref.HEAD }} 
