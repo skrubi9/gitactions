@@ -7,6 +7,7 @@ on:
       - main
       - staging
       - production
+      - test
 
 jobs: 
   build-and-test:
@@ -20,5 +21,4 @@ jobs:
           echo ref ${{ github.ref }}
           echo head_ref ${{ github.head_ref }}
           echo base_ref ${{ github.base_ref }}
-          echo ref.head ${{ github.ref.HEAD }}
-sdf
+          echo ref.head ${{ github.ref.HEAD }} 
