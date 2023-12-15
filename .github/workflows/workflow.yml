@@ -14,4 +14,4 @@ jobs:
           fetch-depth: 0
       - name: print branch
         run: |
-          echo "base_ref ${{ github.ref_name }}"
+          echo "base_ref ${{ github.ref_name }} " 
