@@ -18,4 +18,4 @@ jobs:
           fetch-depth: 0
       - name: print branch
         run: |
-          echo "base_ref ${ GITHUB_REF }"
+          echo "base_ref $GITHUB_REF"
