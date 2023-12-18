@@ -23,6 +23,6 @@ jobs:
           github_token: ${{ secrets.GITKEY }}
           source_branch: main
           target_branch: staging
-          title: My pull request second one
+          title: My pull request
           get_diff: true
           template: .github/PULL_REQUEST_TEMPLATE.md
