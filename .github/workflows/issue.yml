@@ -26,3 +26,4 @@ jobs:
           title: My pull request
           get_diff: true
           template: .github/PULL_REQUEST_TEMPLATE.md
+          label: Deploy
