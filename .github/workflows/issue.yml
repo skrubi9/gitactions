@@ -3,7 +3,7 @@ name: issue
 on:
   push:
     branches:
-      - main
+      - nobranchspecified
 
 permissions:
   contents: read
@@ -14,11 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     environment: general
     steps:
-      - uses: actions/checkout@v3
-      - name: Open PR Merge
-        uses: peter-evans/create-pull-request@v5
+      - uses: actions/checkout@v4.1.0
         with:
-          token: ${{ secrets.GITKEY }}
-          title: Merge to branch via evans
-          branch: staging
-          base: main
+          fetch-depth: 0
+      - name: Run the Action
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITKEY }}
+          source_branch: main
+          target_branch: staging
+          title: My pull request
+          get_diff: true
+          template: .github/PULL_REQUEST_TEMPLATE.md
