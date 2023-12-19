@@ -21,10 +21,10 @@ jobs:
             node_modules
           key: ${{ hashFiles('./package-lock.json') }}
       - name: Install dependencies
-        if: steps.cache-files-restore.outputs.cache-hit == 'false'
+        if: steps.cache-files-restore.outputs.cache-hit != 'true'
         run: npm ci
       - name: Caching
-        if: steps.cache-files-restore.outputs.cache-hit == 'false'
+        if: steps.cache-files-restore.outputs.cache-hit != 'true'
         id: cache-files
         uses: actions/cache/save@v3 
         with: 
