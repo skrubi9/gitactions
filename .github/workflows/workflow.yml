@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - staging
+      - production
 
 jobs:
   install-dep:
@@ -48,6 +50,8 @@ jobs:
             node_modules
           key: ${{ hashFiles('./package-lock.json') }}
       - uses: nrwl/nx-set-shas@v4
+        with: 
+          main-branch-name: ${{ github.ref_name }}
       - name: Build
         run: ./node_modules/.bin/nx affected --target=build --prod
     needs: 
