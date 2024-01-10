@@ -11,6 +11,10 @@ on:
                 description: 'Name of artifact to be fetched'
                 required: true
                 type: string
+        outputs:
+            artifact-built:
+                description: "Defines if a new artifact was built and deployed to artifactory"
+                value: ${{ jobs.print.outputs.artifact-built }}
 
 # permissions:
 #     id-token: write
@@ -18,9 +22,13 @@ on:
 jobs:
     print:
         runs-on: ubuntu-latest
+        outputs:
+            artifact-built: ${{ steps.check.outputs.exists }}
         steps:
             - name: Printer
-              run: echo "Deploy to ecr"
+              id: check
+              run: echo "exists=true" >> "$GITHUB_OUTPUT"
+
     # deploy:
     #     name: Deploy to S3
     #     runs-on: ubuntu-latest

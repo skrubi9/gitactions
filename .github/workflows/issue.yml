@@ -1,32 +1,28 @@
 name: issue
 
 on:
-  workflow_dispatch:
-    inputs:
-      start-pipeline:
-        required: true
-        type: choice
-        description: defines if the workflow shoule be started or not
-        options: 
-          - run 
+  push:
+    branches:
+      - nobranchspecified
 
 permissions:
   contents: read
-  issues: write 
+  pull-requests: write
 
 jobs:
-  manual-approve-deploy:
+  create-pr:
     runs-on: ubuntu-latest
+    environment: general
     steps:
-      - uses: actions/checkout@v3
-      - name: create an issue
-        uses: dacbd/create-issue-action@main
+      - uses: actions/checkout@v4.1.0
         with:
-          token: ${{ github.token }}
-          title: Deploy ${{ github.event.pull_request.title }} to Production blabla
-          body: |
-            Number of commits: ${{ github.event.pull_request.commits }}
-            URL: ${{ github.event.pull_request.html_url }}#
-
-            Close ticket to merge changes into Production. 
-          labels: deploy
+          fetch-depth: 0
+      - name: Run the Action
+        uses: devops-infra/action-pull-request@v0.5.5
+        with:
+          github_token: ${{ secrets.GITKEY }}
+          source_branch: main
+          target_branch: staging
+          title: My pull request
+          get_diff: true
+          template: .github/PULL_REQUEST_TEMPLATE.md

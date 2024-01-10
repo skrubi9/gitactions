@@ -6,15 +6,18 @@ on:
             artifact_name:
                 required: true
                 type: string
-            artifact_directory:
+            artifact_name_2:
                 required: true
                 type: string
+
 jobs:
     print:
+        if: (inputs.artifact_name == 'true' && inputs.artifact_name_2 == 'true')
         runs-on: ubuntu-latest
         steps:
             - name: Printer
               run: echo "Env is ${{ inputs.artifact_name }}"
+
     # toArtifactory:
     #     uses: actions/upload-artifact@v3
     #     with:
