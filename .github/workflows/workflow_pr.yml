@@ -6,15 +6,50 @@ on:
     branches:
       - test
 
-jobs: 
-  build-and-test:
+jobs:
+  install-dep:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.0
         with:
           fetch-depth: 0
-      - name: print branch
-        run: |
-          echo "base_ref ${{ github.ref_name }} "
+      - name: Restore cache
+        id: cache-files-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ~/.cache
+            node_modules
+          key: ${{ hashFiles('./package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-files-restore.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Caching
+        if: steps.cache-files-restore.outputs.cache-hit != 'true'
+        id: cache-files
+        uses: actions/cache/save@v3 
+        with: 
+          path: |
+            ~/.cache
+            node_modules
+          key: ${{ hashFiles('package-lock.json') }}
 
-
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.0
+        with:
+          fetch-depth: 0
+      - name: Restore cache
+        id: cache-files-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            ~/.cache
+            node_modules
+          key: ${{ hashFiles('./package-lock.json') }}
+      - uses: nrwl/nx-set-shas@v4
+      - name: Build
+        run: ./node_modules/.bin/nx affected --target=build --prod
+    needs: 
+      - install-dep
