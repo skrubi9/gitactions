@@ -3,8 +3,6 @@ name: pr pipeline
 on:
   pull_request:
     types: [opened, synchronize]
-    branches:
-      - test
 
 jobs:
   install-dep:
