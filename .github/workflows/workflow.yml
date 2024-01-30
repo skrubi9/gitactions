@@ -6,53 +6,64 @@ on:
       - main
       - staging
       - production
+  repository_dispatch:
+    types: 
+      - run-post-spinnaker-design
+  
+run-name: "Post Spinnaker Design: ${{ github.event.client_payload.branch }}"
 
 jobs:
   install-dep:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
-        with:
-          fetch-depth: 0
-      - name: Restore cache
-        id: cache-files-restore
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ~/.cache
-            node_modules
-          key: ${{ hashFiles('./package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache-files-restore.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Caching
-        if: steps.cache-files-restore.outputs.cache-hit != 'true'
-        id: cache-files
-        uses: actions/cache/save@v3 
-        with: 
-          path: |
-            ~/.cache
-            node_modules
-          key: ${{ hashFiles('package-lock.json') }}
+      - name: test
+        run: echo "test"
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.0
-        with:
-          fetch-depth: 0
-      - name: Restore cache
-        id: cache-files-restore
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ~/.cache
-            node_modules
-          key: ${{ hashFiles('./package-lock.json') }}
-      - uses: nrwl/nx-set-shas@v4
-        with: 
-          main-branch-name: ${{ github.ref_name }}
-      - name: Build
-        run: ./node_modules/.bin/nx affected --target=build --prod
-    needs: 
-      - install-dep
+  # install-dep:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4.1.0
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Restore cache
+  #       id: cache-files-restore
+  #       uses: actions/cache/restore@v3
+  #       with:
+  #         path: |
+  #           ~/.cache
+  #           node_modules
+  #         key: ${{ hashFiles('./package-lock.json') }}
+  #     - name: Install dependencies
+  #       if: steps.cache-files-restore.outputs.cache-hit != 'true'
+  #       run: npm ci
+  #     - name: Caching
+  #       if: steps.cache-files-restore.outputs.cache-hit != 'true'
+  #       id: cache-files
+  #       uses: actions/cache/save@v3 
+  #       with: 
+  #         path: |
+  #           ~/.cache
+  #           node_modules
+  #         key: ${{ hashFiles('package-lock.json') }}
+
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4.1.0
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Restore cache
+  #       id: cache-files-restore
+  #       uses: actions/cache/restore@v3
+  #       with:
+  #         path: |
+  #           ~/.cache
+  #           node_modules
+  #         key: ${{ hashFiles('./package-lock.json') }}
+  #     - uses: nrwl/nx-set-shas@v4
+  #       with: 
+  #         main-branch-name: ${{ github.ref_name }}
+  #     - name: Build
+  #       run: ./node_modules/.bin/nx affected --target=build --prod
+  #   needs: 
+  #     - install-dep
