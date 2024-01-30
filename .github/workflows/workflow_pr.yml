@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        run: echo "${{ github.ref_name }}"
+        run: echo "${{ github.head_ref }}"
