@@ -11,4 +11,7 @@ import {
   template: '',
 })
 export class AppComponent {
+  constructor() {
+    
+  }
 }
