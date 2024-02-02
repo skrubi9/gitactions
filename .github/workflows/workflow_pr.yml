@@ -9,6 +9,7 @@ jobs:
   printer:
     runs-on: ubuntu-latest
     steps:
+      - run: echo 'test'
       - run: echo ${{ github.ref }}
 
   # install-dep:
