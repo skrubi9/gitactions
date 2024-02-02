@@ -33,7 +33,7 @@ jobs:
           key: ${{ hashFiles('package-lock.json') }}
 
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Test Projects
     steps:
       - uses: actions/checkout@v4.1.0
