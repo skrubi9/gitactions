@@ -15,6 +15,7 @@ jobs:
       - uses: actions/github-script@v6
         id: get_pr_data
         with:
+          github-token: ${{ secrets.GITKEY }}
           script: |
               return (
                 await github.rest.repos.listPullRequestsAssociatedWithCommit({
@@ -27,8 +28,6 @@ jobs:
         run: |
           echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}'
           echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}'
-
-          
 
   # install-dep:
   #   runs-on: ubuntu-latest
