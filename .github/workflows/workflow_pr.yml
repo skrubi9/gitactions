@@ -13,10 +13,8 @@ jobs:
   printer:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.base_ref }}
-      - run: echo ${{ github.head_ref }}
-      - run: echo ${{ github.ref }}
-      - run: echo ${{ github.ref_name }}
+      - run: echo ${{ github.event.base_ref }}
+      - run: echo ${{ github.event.ref }}
 
   # install-dep:
   #   runs-on: ubuntu-latest
