@@ -15,6 +15,7 @@ jobs:
     steps:
       - run: echo ${{ github.base_ref }}
       - run: echo ${{ github.head_ref }}
+      - run: echo ${{ github.ref }}
 
   # install-dep:
   #   runs-on: ubuntu-latest
