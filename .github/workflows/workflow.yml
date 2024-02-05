@@ -13,66 +13,72 @@ on:
 run-name: "Post Spinnaker Design: ${{ github.event.client_payload.branch }}"
 
 jobs:
-  install-dep:
+  printer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.0
-        with:
-          fetch-depth: 0
-      - name: Restore cache
-        id: cache-files-restore
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            ~/.cache
-            node_modules
-          key: ${{ hashFiles('./package-lock.json') }}
-      - name: Install dependencies
-        if: steps.cache-files-restore.outputs.cache-hit != 'true'
-        run: npm ci
-      - name: Caching
-        if: steps.cache-files-restore.outputs.cache-hit != 'true'
-        id: cache-files
-        uses: actions/cache/save@v3 
-        with: 
-          path: |
-            ~/.cache
-            node_modules
-          key: ${{ hashFiles('package-lock.json') }}
+      - run: echo 'test'
+      - run: echo ${{ github.ref }}
 
-  test:
-    runs-on: ubuntu-latest
-    name: Test Projects
-    steps:
-      - uses: actions/checkout@v4.1.0
-        with:
-          fetch-depth: 0
-      - name: Restore cache
-        id: cache-files-restore
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            ~/.cache
-            node_modules
-          key: ${{ hashFiles('./package-lock.json') }}
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: npm
-      - uses: nrwl/nx-set-shas@v4
-      - run: git branch --track main origin/main
-      - name: Create a dummy .env file to be able to run the tests
-        run: touch .env
-      - name: Test affected projects
-        run: MONGOMS_DEBUG=1 NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --coverage --coverageReporters=lcov --parallel
-      - uses: actions/upload-artifact@v3
-        with:
-          name: testfiles
-          # adds also .nvmrc to make sure the artifacts gets always uploaded cause
-          # If no artifact is found the download-artifact will fail the pipeline (see issue on sonar step)
-          path: |
-            coverage/**/lcov.info
-            .nvmrc
-    needs:
-      - install-dep
+  # install-dep:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4.1.0
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Restore cache
+  #       id: cache-files-restore
+  #       uses: actions/cache/restore@v3
+  #       with:
+  #         path: |
+  #           ~/.cache
+  #           node_modules
+  #         key: ${{ hashFiles('./package-lock.json') }}
+  #     - name: Install dependencies
+  #       if: steps.cache-files-restore.outputs.cache-hit != 'true'
+  #       run: npm ci
+  #     - name: Caching
+  #       if: steps.cache-files-restore.outputs.cache-hit != 'true'
+  #       id: cache-files
+  #       uses: actions/cache/save@v3 
+  #       with: 
+  #         path: |
+  #           ~/.cache
+  #           node_modules
+  #         key: ${{ hashFiles('package-lock.json') }}
+
+  # test:
+  #   runs-on: ubuntu-latest
+  #   name: Test Projects
+  #   steps:
+  #     - uses: actions/checkout@v4.1.0
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Restore cache
+  #       id: cache-files-restore
+  #       uses: actions/cache/restore@v4
+  #       with:
+  #         path: |
+  #           ~/.cache
+  #           node_modules
+  #         key: ${{ hashFiles('./package-lock.json') }}
+  #     - name: Use Node.js 20
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20
+  #         cache: npm
+  #     - uses: nrwl/nx-set-shas@v4
+  #     - run: git branch --track main origin/main
+  #     - name: Create a dummy .env file to be able to run the tests
+  #       run: touch .env
+  #     - name: Test affected projects
+  #       run: MONGOMS_DEBUG=1 NODE_OPTIONS="--max_old_space_size=8192" ./node_modules/.bin/nx affected --target=test --coverage --coverageReporters=lcov --parallel
+  #     - uses: actions/upload-artifact@v3
+  #       with:
+  #         name: testfiles
+  #         # adds also .nvmrc to make sure the artifacts gets always uploaded cause
+  #         # If no artifact is found the download-artifact will fail the pipeline (see issue on sonar step)
+  #         path: |
+  #           coverage/**/lcov.info
+  #           .nvmrc
+  #   needs:
+  #     - install-dep
