@@ -9,12 +9,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
-  printer:
+  pr-info:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.base_ref }}
-      - run: echo ${{ github.event.ref }}
+      - uses: actions/github-script@v6
+        id: get_pr_data
+        with:
+          script: |
+              return (
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  commit_sha: context.sha,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                })
+              ).data[0];
+      - name: Pull Request data
+        run: |
+          echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}'
+          echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}'
 
   # install-dep:
   #   runs-on: ubuntu-latest
