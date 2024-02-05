@@ -28,6 +28,8 @@ jobs:
           echo '${{ fromJson(steps.get_pr_data.outputs.result).number }}'
           echo '${{ fromJson(steps.get_pr_data.outputs.result).title }}'
 
+          
+
   # install-dep:
   #   runs-on: ubuntu-latest
   #   steps:
