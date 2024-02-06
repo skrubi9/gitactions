@@ -10,11 +10,13 @@ concurrency:
 
 jobs:
   pr-info:
+    environment: general
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
         id: get_pr_data
         with:
+          github-token: ${{ secrets.GITKEY }}
           script: |
               return (
                 await github.rest.repos.listPullRequestsAssociatedWithCommit({
